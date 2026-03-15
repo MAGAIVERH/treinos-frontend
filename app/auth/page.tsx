@@ -5,6 +5,7 @@ import { headers } from 'next/headers';
 import { SignInWithGoogle } from './_components/sign-in-with-google';
 
 export default async function AuthPage() {
+    console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
   const session = await authClient.getSession({
     fetchOptions: {
       headers: await headers(),
