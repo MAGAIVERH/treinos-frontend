@@ -27,13 +27,19 @@ export default async function Home() {
     getUserTrainData(),
   ]);
 
-  if (homeData.status !== 200) {
-    throw new Error('Failed to fetch home data');
+  if (homeData.status === 401) {
+    redirect('/auth');
   }
 
-  const needsOnboarding =
-    !homeData.data.activeWorkoutPlanId ||
-    (trainData.status === 200 && !trainData.data);
+  if (homeData.status === 404) {
+    redirect('/onboarding');
+  }
+
+  if (homeData.status !== 200) {
+    throw new Error(`Failed to fetch home data: ${homeData.status}`);
+  }
+
+  const needsOnboarding = trainData.status === 200 && !trainData.data;
   if (needsOnboarding) redirect('/onboarding');
 
   const { todayWorkoutDay, workoutStreak, consistencyByDay } = homeData.data;
