@@ -64,7 +64,7 @@ export default async function ProfilePage() {
                 {user.name}
               </h1>
               <p className='font-heading text-sm leading-[1.15] text-foreground/70'>
-                Plano Basico
+                Plano Premium Free
               </p>
             </div>
           </div>

@@ -9,9 +9,8 @@ import {
 import dayjs from 'dayjs';
 import { CircleCheck, CirclePercent, Hourglass } from 'lucide-react';
 import { BottomNav } from '@/app/_components/bottom-nav';
-
-import { StatsHeatmap } from './_components/stats-heatmap';
 import { StreakBanner } from './_components/streak-banner';
+import { StatsHeatmap } from './_components/stats-heatmap';
 import { StatCard } from './_components/stat-card';
 
 function formatTotalTime(totalSeconds: number): string {

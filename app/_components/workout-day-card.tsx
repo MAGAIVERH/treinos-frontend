@@ -3,13 +3,13 @@ import { Calendar, Timer, Dumbbell } from 'lucide-react';
 import type { GetHomeData200TodayWorkoutDayWeekDay } from '@/app/_lib/api/fetch-generated';
 
 const WEEKDAY_LABELS: Record<string, string> = {
-  MONDAY: 'SEGUNDA',
-  TUESDAY: 'TERÇA',
-  WEDNESDAY: 'QUARTA',
-  THURSDAY: 'QUINTA',
-  FRIDAY: 'SEXTA',
-  SATURDAY: 'SÁBADO',
-  SUNDAY: 'DOMINGO',
+  Monday: 'SEGUNDA',
+  Tuesday: 'TERÇA',
+  Wednesday: 'QUARTA',
+  Thursday: 'QUINTA',
+  Friday: 'SEXTA',
+  Saturday: 'SÁBADO',
+  Sunday: 'DOMINGO',
 };
 
 interface WorkoutDayCardProps {
