@@ -35,14 +35,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'FIT.AI — Treine com inteligência',
     description: 'Planos de treino personalizados criados por IA.',
-    images: [{ url: '/opengraph-image.png', width: 1200, height: 630 }], // ← .png
+    images: [{ url: '/opengraph-image1.png', width: 1200, height: 630 }], // ← .png
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'FIT.AI — Treine com inteligência',
     description: 'Planos de treino personalizados criados por IA.',
-    images: ['/opengraph-image.png'], // ← .png
+    images: ['/opengraph-image1.png'], // ← .png
   },
 };
 
