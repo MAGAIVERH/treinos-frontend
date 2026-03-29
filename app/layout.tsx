@@ -30,19 +30,19 @@ export const metadata: Metadata = {
   title: 'FIT.AI',
   description: 'O app que vai transformar a forma como você treina.',
   icons: {
-    icon: '/favicon.svg',
+    icon: '/favicon.png', // ← .png
   },
   openGraph: {
     title: 'FIT.AI — Treine com inteligência',
     description: 'Planos de treino personalizados criados por IA.',
-    images: [{ url: '/opengraph-image.svg', width: 1200, height: 630 }],
+    images: [{ url: '/opengraph-image.png', width: 1200, height: 630 }], // ← .png
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'FIT.AI — Treine com inteligência',
     description: 'Planos de treino personalizados criados por IA.',
-    images: ['/opengraph-image.svg'],
+    images: ['/opengraph-image.png'], // ← .png
   },
 };
 
