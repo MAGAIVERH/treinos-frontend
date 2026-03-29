@@ -1,16 +1,27 @@
 'use client';
 
+import { authClient } from '@/app/_lib/auth-client';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 
 export const SignInWithGoogle = () => {
-  const handleGoogleLogin = () => {
-    // ← Redireciona o browser diretamente para a API
-    // em vez de fazer uma chamada fetch/XHR
-    const callbackURL = encodeURIComponent(
-      'https://treinos-frontend-gold.vercel.app/',
-    );
-    window.location.href = `https://treinos-api.vercel.app/api/auth/signin/google?callbackURL=${callbackURL}`;
+  const handleGoogleLogin = async () => {
+    const response = await authClient.signIn.social({
+      provider: 'google',
+      callbackURL: 'https://treinos-frontend-gold.vercel.app/',
+      // ← isso faz o authClient retornar a URL em vez de redirecionar
+      fetchOptions: {
+        onSuccess: (ctx) => {
+          if (ctx.response.redirected) {
+            window.location.href = ctx.response.url;
+          }
+        },
+      },
+    });
+
+    if (response.data?.url) {
+      window.location.href = response.data.url;
+    }
   };
 
   return (
