@@ -1,28 +1,15 @@
 'use client';
 
+import { authClient } from '@/app/_lib/auth-client';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 
 export const SignInWithGoogle = () => {
   const handleGoogleLogin = async () => {
-    const response = await fetch(
-      'https://treinos-api.vercel.app/api/auth/sign-in/social',
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          provider: 'google',
-          callbackURL: 'https://treinos-frontend-gold.vercel.app/',
-        }),
-        credentials: 'include', // ← salva os cookies no browser
-      },
-    );
-
-    const data = await response.json();
-
-    if (data.url) {
-      window.location.href = data.url; // ← redireciona para o Google
-    }
+    await authClient.signIn.social({
+      provider: 'google',
+      callbackURL: '/',
+    });
   };
 
   return (
