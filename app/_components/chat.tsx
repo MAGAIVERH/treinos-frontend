@@ -36,7 +36,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
 
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
-      api: `${process.env.NEXT_PUBLIC_API_URL}/ai`,
+      api: `/api/ai`,
       credentials: 'include',
     }),
   });
@@ -114,13 +114,13 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
       className={
         embedded
           ? 'flex h-svh flex-col bg-background'
-          : 'flex flex-1 flex-col overflow-hidden rounded-[20px] bg-background'
+          : 'flex flex-1 flex-col overflow-hidden rounded-4xl bg-background'
       }
     >
       <div className='flex shrink-0 items-center justify-between border-b border-border p-5'>
         <div className='flex items-center gap-2'>
           <div className='flex items-center justify-center rounded-full bg-primary/8 border border-primary/8 p-3'>
-            <Sparkles className='size-[18px] text-primary' />
+            <Sparkles className='size-4.5 text-primary' />
           </div>
           <div className='flex flex-col gap-1.5'>
             <span className='font-heading text-base font-semibold text-foreground'>
@@ -149,8 +149,8 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
             key={message.id}
             className={
               message.role === 'assistant'
-                ? 'flex flex-col items-start pl-5 pr-[60px] pt-5'
-                : 'flex flex-col items-end pl-[60px] pr-5 pt-5'
+                ? 'flex flex-col items-start pl-5 pr-15 pt-5'
+                : 'flex flex-col items-end pl-15 pr-5 pt-5'
             }
           >
             <div
@@ -230,7 +230,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
               type='submit'
               disabled={!messageValue.trim() || isLoading}
               size='icon'
-              className='size-[42px] shrink-0 rounded-full'
+              className='size-10.5 shrink-0 rounded-full'
             >
               <ArrowUp className='size-5' />
             </Button>
@@ -243,7 +243,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
   if (embedded) return chatContent;
 
   return (
-    <div className='fixed inset-0 z-[60]'>
+    <div className='fixed inset-0 z-60'>
       <div
         className='absolute inset-0 bg-foreground/30'
         onClick={handleClose}
