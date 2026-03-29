@@ -29,6 +29,21 @@ const anton = Anton({
 export const metadata: Metadata = {
   title: 'FIT.AI',
   description: 'O app que vai transformar a forma como você treina.',
+  icons: {
+    icon: '/favicon.svg',
+  },
+  openGraph: {
+    title: 'FIT.AI — Treine com inteligência',
+    description: 'Planos de treino personalizados criados por IA.',
+    images: [{ url: '/opengraph-image.svg', width: 1200, height: 630 }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FIT.AI — Treine com inteligência',
+    description: 'Planos de treino personalizados criados por IA.',
+    images: ['/opengraph-image.svg'],
+  },
 };
 
 export default function RootLayout({
