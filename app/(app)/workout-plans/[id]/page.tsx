@@ -13,7 +13,11 @@ import { Goal } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { WorkoutDayCard } from '@/app/_components/workout-day-card';
 import { RestDayCard } from './_components/rest-day-card';
-import { WEEKDAY_ORDER } from '@/app/_lib/weekday-labels';
+import {
+  getDesktopGridClass,
+  groupWorkoutPlanDays,
+} from '@/app/_lib/group-workout-plan-days';
+import { cn } from '@/lib/utils';
 
 export default async function WorkoutPlanPage({
   params,
@@ -43,12 +47,8 @@ export default async function WorkoutPlanPage({
   if (workoutPlanData.status !== 200) redirect('/');
 
   const { name, workoutDays } = workoutPlanData.data;
-
-  const sortedDays = [...workoutDays].sort(
-    (a, b) =>
-      WEEKDAY_ORDER.indexOf(a.weekDay as (typeof WEEKDAY_ORDER)[number]) -
-      WEEKDAY_ORDER.indexOf(b.weekDay as (typeof WEEKDAY_ORDER)[number]),
-  );
+  const dayGroups = groupWorkoutPlanDays(workoutDays);
+  const desktopGridClass = getDesktopGridClass(dayGroups.length);
 
   return (
     <div className='flex min-h-0 flex-1 flex-col'>
@@ -87,15 +87,31 @@ export default async function WorkoutPlanPage({
         </div>
       </div>
 
-      <div className='-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 py-5 scroll-pl-5 [-ms-overflow-style:none] [scrollbar-width:none] lg:mx-0 lg:grid lg:grid-cols-3 lg:items-stretch lg:gap-3 lg:overflow-visible lg:px-0 lg:py-6 [&::-webkit-scrollbar]:hidden'>
-        {sortedDays.map((day) => (
-          <div
-            key={day.id}
-            className='h-full w-[min(260px,78vw)] shrink-0 snap-start lg:w-auto'
-          >
-            {day.isRest ? (
-              <RestDayCard weekDay={day.weekDay} />
-            ) : (
+      <div
+        className={cn(
+          '-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 py-5 scroll-pl-5 [-ms-overflow-style:none] [scrollbar-width:none] lg:mx-0 lg:grid lg:items-stretch lg:gap-3 lg:overflow-visible lg:px-0 lg:py-6 [&::-webkit-scrollbar]:hidden',
+          desktopGridClass,
+        )}
+      >
+        {dayGroups.map((group) => {
+          if (group.type === 'rest') {
+            return (
+              <div
+                key={group.weekDays.join('-')}
+                className='h-full w-[min(320px,88vw)] shrink-0 snap-start lg:w-auto'
+              >
+                <RestDayCard weekDays={group.weekDays} />
+              </div>
+            );
+          }
+
+          const { day } = group;
+
+          return (
+            <div
+              key={day.id}
+              className='h-full w-[min(320px,88vw)] shrink-0 snap-start lg:w-auto'
+            >
               <Link
                 href={`/workout-plans/${id}/days/${day.id}`}
                 className='block h-full'
@@ -108,9 +124,9 @@ export default async function WorkoutPlanPage({
                   coverImageUrl={day.coverImageUrl}
                 />
               </Link>
-            )}
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
