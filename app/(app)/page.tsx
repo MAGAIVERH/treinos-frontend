@@ -39,12 +39,16 @@ export default async function Home() {
   const needsOnboarding = trainData.status === 200 && !trainData.data;
   if (needsOnboarding) redirect('/onboarding');
 
-  const { todayWorkoutDay, workoutStreak, consistencyByDay } = homeData.data;
+  const { todayWorkoutDay, workoutStreak, consistencyByDay, activeWorkoutPlanId } =
+    homeData.data;
   const userName = session.data.user.name?.split(' ')[0] ?? '';
+  const todayWorkoutHref = todayWorkoutDay
+    ? `/workout-plans/${todayWorkoutDay.workoutPlanId}/days/${todayWorkoutDay.id}`
+    : null;
 
   return (
-    <div className='flex shrink-0 flex-col gap-3 lg:gap-4'>
-      <div className='relative flex aspect-[16/9] w-full max-h-[26svh] shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5 lg:aspect-[21/9] lg:max-h-[28vh] lg:rounded-4xl'>
+    <div className='mx-auto flex w-full min-w-0 max-w-3xl shrink-0 flex-col gap-3 lg:min-h-0 lg:flex-1 lg:justify-between lg:gap-6'>
+      <div className='relative flex aspect-[16/9] w-full max-w-full max-h-[26svh] shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5 lg:aspect-[21/9] lg:max-h-[28vh] lg:rounded-4xl'>
         <div className='absolute inset-0' aria-hidden='true'>
           <Image
             src='/home-banner.jpg'
@@ -66,34 +70,48 @@ export default async function Home() {
           Fit.ai
         </p>
 
-        <div className='relative flex w-full items-end justify-between'>
-          <div className='flex flex-col gap-1.5'>
-            <h1 className='font-heading text-2xl font-semibold leading-[1.05] text-background lg:text-3xl'>
+        <div className='relative flex w-full min-w-0 items-end justify-between gap-3'>
+          <div className='flex min-w-0 flex-1 flex-col gap-1.5'>
+            <h1 className='truncate font-heading text-2xl font-semibold leading-[1.05] text-background lg:text-3xl'>
               Olá, {userName}
             </h1>
             <p className='font-heading text-sm leading-[1.15] text-background/70'>
               Bora treinar hoje?
             </p>
           </div>
-          <div className='rounded-full bg-primary px-4 py-2'>
-            <span className='font-heading text-sm font-semibold text-primary-foreground'>
-              Bora!
-            </span>
-          </div>
+          {todayWorkoutHref ? (
+            <Link
+              href={todayWorkoutHref}
+              className='shrink-0 rounded-full bg-primary px-4 py-2'
+            >
+              <span className='font-heading text-sm font-semibold text-primary-foreground'>
+                Bora!
+              </span>
+            </Link>
+          ) : (
+            <div className='shrink-0 rounded-full bg-primary px-4 py-2'>
+              <span className='font-heading text-sm font-semibold text-primary-foreground'>
+                Bora!
+              </span>
+            </div>
+          )}
         </div>
       </div>
 
-      <div className='flex shrink-0 flex-col gap-2'>
-        <div className='flex items-center justify-between'>
-          <h2 className='font-heading text-lg font-semibold text-foreground'>
+      <div className='flex min-w-0 max-w-full shrink-0 flex-col gap-2'>
+        <div className='flex min-w-0 items-center justify-between gap-3'>
+          <h2 className='font-heading text-base font-semibold text-foreground'>
             Consistência
           </h2>
-          <button type='button' className='font-heading text-xs text-primary'>
+          <Link
+            href='/stats'
+            className='shrink-0 font-heading text-xs text-primary'
+          >
             Ver histórico
-          </button>
+          </Link>
         </div>
 
-        <div className='flex h-[72px] items-center gap-2'>
+        <div className='flex h-[72px] min-w-0 items-center gap-2'>
           <div className='flex h-full flex-1 items-center rounded-xl border border-border p-3 lg:p-4'>
             <ConsistencyTracker
               consistencyByDay={consistencyByDay}
@@ -110,19 +128,22 @@ export default async function Home() {
       </div>
 
       {todayWorkoutDay && (
-        <div className='flex shrink-0 flex-col gap-2'>
-          <div className='flex items-center justify-between'>
-            <h2 className='font-heading text-lg font-semibold text-foreground'>
+        <div className='flex min-w-0 max-w-full shrink-0 flex-col gap-2'>
+          <div className='flex min-w-0 items-center justify-between gap-3'>
+            <h2 className='font-heading text-base font-semibold text-foreground'>
               Treino de Hoje
             </h2>
-            <button type='button' className='font-heading text-xs text-primary'>
+            <Link
+              href={`/workout-plans/${activeWorkoutPlanId}`}
+              className='shrink-0 font-heading text-xs text-primary'
+            >
               Ver treinos
-            </button>
+            </Link>
           </div>
 
           <Link
             href={`/workout-plans/${todayWorkoutDay.workoutPlanId}/days/${todayWorkoutDay.id}`}
-            className='block lg:max-w-2xl'
+            className='block w-full min-w-0 max-w-full'
           >
             <WorkoutDayCard
               variant='compact'
