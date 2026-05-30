@@ -14,7 +14,7 @@ export default async function AuthPage() {
   if (session.data?.user) redirect('/');
 
   return (
-    <div className='flex min-h-svh flex-col lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:grid-rows-1'>
+    <div className='flex min-h-svh flex-col lg:grid lg:grid-cols-2 lg:grid-rows-1'>
       {/* Hero — coluna esquerda no desktop; topo no mobile */}
       <div className='relative min-h-[42svh] shrink-0 overflow-hidden lg:min-h-svh'>
         <Image
@@ -25,11 +25,11 @@ export default async function AuthPage() {
           priority
         />
         <div
-          className='absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-black/30 lg:bg-linear-to-r lg:from-black/10 lg:via-transparent lg:to-black/40'
+          className='absolute inset-0 bg-linear-to-t from-black/85 via-black/25 to-black/40 lg:bg-linear-to-t lg:from-black/90 lg:via-black/20 lg:to-black/50'
           aria-hidden='true'
         />
 
-        <div className='relative z-10 flex h-full flex-col justify-between p-5 pt-12 lg:p-12 lg:pb-16'>
+        <div className='relative z-10 flex h-full flex-col p-5 pt-12 lg:p-12 lg:pb-14'>
           <Image
             src='/fit-ai-logo.svg'
             alt='FIT.AI'
@@ -38,38 +38,65 @@ export default async function AuthPage() {
             className='lg:hidden'
           />
 
-          <div className='hidden max-w-md lg:block'>
-            <p className='font-heading text-sm font-medium uppercase tracking-[0.2em] text-white/70'>
+          <div className='mt-auto hidden max-w-lg lg:block'>
+            <p className='font-heading text-[11px] font-semibold uppercase tracking-[0.24em] text-white/60'>
               Personal trainer com IA
             </p>
-            <h2 className='mt-4 font-heading text-4xl font-semibold leading-[1.05] text-white xl:text-5xl'>
+            <h2 className='mt-3 font-heading text-[2.125rem] font-semibold leading-[1.12] text-white xl:text-[2.5rem] xl:leading-[1.1]'>
               Treinos feitos para o seu corpo, não para a massa.
             </h2>
           </div>
         </div>
       </div>
 
-      {/* Painel de login — coluna direita no desktop; card inferior no mobile */}
-      <div className='relative z-10 flex flex-1 flex-col lg:justify-center lg:bg-background lg:px-12 lg:py-16 xl:px-20'>
-        <div className='flex flex-1 flex-col items-center gap-15 rounded-t-4xl bg-primary px-5 pb-10 pt-12 lg:flex-none lg:gap-10 lg:rounded-none lg:bg-transparent lg:px-0 lg:pb-0 lg:pt-0'>
-          <div className='hidden lg:block'>
-            <Image src='/fit-ai-logo.svg' alt='FIT.AI' width={96} height={43} />
-          </div>
-
-          <div className='flex w-full max-w-md flex-col items-center gap-6 lg:items-start lg:gap-8'>
-            <h1 className='w-full text-center font-heading text-[32px] font-semibold leading-[1.05] text-primary-foreground lg:text-left lg:text-4xl lg:leading-[1.08] lg:text-foreground xl:text-[2.75rem]'>
+      {/* Painel de login */}
+      <div className='relative z-10 flex flex-1 flex-col lg:min-h-svh lg:bg-background'>
+        {/* Mobile */}
+        <div className='flex flex-1 flex-col items-center gap-15 rounded-t-4xl bg-primary px-5 pb-10 pt-12 lg:hidden'>
+          <div className='flex w-full max-w-md flex-col items-center gap-6'>
+            <h1 className='w-full text-center font-heading text-[32px] font-semibold leading-[1.05] text-primary-foreground'>
               O app que vai transformar a forma como você treina.
             </h1>
+            <SignInWithGoogle className='w-full' />
+          </div>
+          <p className='text-center font-heading text-xs leading-[1.4] text-primary-foreground/70'>
+            ©2026 Copyright FIT.AI. Todos os direitos reservados
+          </p>
+        </div>
 
-            <p className='hidden w-full text-center font-heading text-base leading-relaxed text-muted-foreground lg:block lg:text-left'>
-              Entre com sua conta Google e monte um plano personalizado com
-              nossa IA em poucos minutos.
-            </p>
+        {/* Desktop */}
+        <div className='hidden lg:flex lg:min-h-svh lg:flex-col lg:justify-between lg:px-16 lg:py-12 xl:px-24'>
+          <div className='flex flex-1 items-center'>
+            <div className='w-full max-w-[22rem] xl:max-w-[24rem]'>
+              <p
+                className='text-[2rem] leading-none tracking-[0.04em] text-foreground'
+                style={{ fontFamily: 'var(--font-anton)' }}
+              >
+                FIT.AI
+              </p>
 
-            <SignInWithGoogle className='w-full lg:w-auto' />
+              <div className='mt-12 border-t border-border pt-10'>
+                <p className='font-heading text-[11px] font-semibold uppercase tracking-[0.2em] text-primary'>
+                  Entrar na plataforma
+                </p>
+
+                <h1 className='mt-3 font-heading text-[1.875rem] font-semibold leading-[1.15] text-foreground xl:text-[2rem]'>
+                  Transforme a forma como você treina.
+                </h1>
+
+                <p className='mt-4 max-w-[34ch] font-heading text-[15px] leading-[1.65] text-muted-foreground'>
+                  Use sua conta Google para acessar planos personalizados criados
+                  pela nossa IA.
+                </p>
+
+                <div className='mt-10'>
+                  <SignInWithGoogle />
+                </div>
+              </div>
+            </div>
           </div>
 
-          <p className='text-center font-heading text-xs leading-[1.4] text-primary-foreground/70 lg:text-muted-foreground'>
+          <p className='font-heading text-[11px] leading-[1.4] text-muted-foreground/80'>
             ©2026 Copyright FIT.AI. Todos os direitos reservados
           </p>
         </div>
