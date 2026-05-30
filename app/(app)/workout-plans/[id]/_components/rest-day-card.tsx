@@ -14,9 +14,9 @@ export function RestDayCard({ weekDays }: RestDayCardProps) {
   return (
     <div className='flex h-56 w-full min-w-0 flex-col items-start justify-between rounded-xl bg-muted p-5 lg:h-full lg:min-h-0 lg:p-3'>
       <div className='flex min-w-0 flex-col gap-2 lg:gap-1'>
-        <div className='flex items-center gap-1 rounded-full bg-foreground/8 px-2.5 py-1.5 backdrop-blur-sm'>
-          <Calendar className='size-3.5 shrink-0 text-foreground' />
-          <span className='font-heading text-xs font-semibold uppercase text-foreground'>
+        <div className='inline-flex w-fit shrink-0 items-center gap-1 rounded-full bg-foreground/8 px-2 py-1 backdrop-blur-sm'>
+          <Calendar className='size-3 shrink-0 text-foreground' />
+          <span className='font-heading text-[11px] font-semibold uppercase leading-none text-foreground'>
             {formatRestDayShort(weekDays)}
           </span>
         </div>

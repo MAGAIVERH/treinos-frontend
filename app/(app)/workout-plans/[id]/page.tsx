@@ -51,7 +51,7 @@ export default async function WorkoutPlanPage({
   const desktopGridClass = getDesktopGridClass(dayGroups.length);
 
   return (
-    <div className='flex min-h-0 flex-1 flex-col lg:h-full lg:min-h-0 lg:overflow-hidden'>
+    <div className='flex min-h-0 flex-1 flex-col gap-2 lg:h-full lg:min-h-0 lg:overflow-hidden lg:pt-5'>
       <div className='relative flex aspect-[5/4] w-full max-w-full max-h-[44svh] shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5 lg:aspect-[21/9] lg:max-h-[28vh] lg:rounded-4xl'>
         <div className='absolute inset-0' aria-hidden='true'>
           <Image

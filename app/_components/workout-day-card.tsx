@@ -53,10 +53,10 @@ export function WorkoutDayCard({
         />
       )}
       <div className='absolute inset-0 bg-foreground/40' />
-      <div className={cn('relative min-w-0', isPlan && 'w-full')}>
-        <div className='flex items-center gap-1 rounded-full bg-background/16 px-2.5 py-1.5 backdrop-blur-sm'>
-          <Calendar className='size-3.5 shrink-0 text-background' />
-          <span className='font-heading text-xs font-semibold uppercase text-background'>
+      <div className='relative min-w-0'>
+        <div className='inline-flex w-fit shrink-0 items-center gap-1 rounded-full bg-background/16 px-2 py-1 backdrop-blur-sm'>
+          <Calendar className='size-3 shrink-0 text-background' />
+          <span className='font-heading text-[11px] font-semibold uppercase leading-none text-background'>
             {WEEKDAY_LABELS[weekDay]}
           </span>
         </div>
