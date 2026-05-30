@@ -38,7 +38,7 @@ export function WorkoutDayCard({
       className={cn(
         'relative flex w-full flex-col items-start justify-between overflow-hidden rounded-xl',
         isCompact
-          ? 'aspect-[16/9] max-h-[20svh] p-4 lg:max-h-[22vh]'
+          ? 'aspect-[16/9] max-h-[32svh] p-4 lg:aspect-[21/9] lg:max-h-[28vh] lg:rounded-4xl'
           : 'h-50 p-5 lg:h-full lg:min-h-56',
       )}
     >

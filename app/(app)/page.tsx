@@ -47,8 +47,8 @@ export default async function Home() {
     : null;
 
   return (
-    <div className='mx-auto flex w-full min-w-0 max-w-3xl shrink-0 flex-col gap-3 lg:min-h-0 lg:flex-1 lg:justify-between lg:gap-6'>
-      <div className='relative flex aspect-[16/9] w-full max-w-full max-h-[26svh] shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5 lg:aspect-[21/9] lg:max-h-[28vh] lg:rounded-4xl'>
+    <div className='mx-auto flex w-full min-w-0 max-w-3xl shrink-0 flex-col gap-2 lg:gap-3 lg:pt-5'>
+      <div className='relative flex aspect-[16/9] w-full max-w-full max-h-[32svh] shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5 lg:aspect-[21/9] lg:max-h-[28vh] lg:rounded-4xl'>
         <div className='absolute inset-0' aria-hidden='true'>
           <Image
             src='/home-banner.jpg'
