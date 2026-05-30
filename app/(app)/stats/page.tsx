@@ -56,21 +56,21 @@ export default async function StatsPage() {
   } = statsResponse.data;
 
   return (
-    <>
+    <div className='flex min-h-0 flex-1 flex-col'>
       <AppHeader variant='title' className='lg:hidden' />
 
       <div className='pb-5 lg:pb-6'>
         <StreakBanner workoutStreak={workoutStreak} />
       </div>
 
-      <div className='flex flex-col gap-3 pb-5 lg:gap-6 lg:pb-6'>
+      <div className='flex flex-col gap-3 lg:gap-6'>
         <h2 className='font-heading text-lg font-semibold text-foreground'>
           Consistência
         </h2>
 
         <StatsHeatmap consistencyByDay={consistencyByDay} today={today} />
 
-        <div className='grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-4'>
+        <div className='grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4'>
           <StatCard
             icon={CircleCheck}
             value={String(completedWorkoutsCount)}
@@ -85,11 +85,9 @@ export default async function StatsPage() {
             icon={Hourglass}
             value={formatTotalTime(totalTimeInSeconds)}
             label='Tempo Total'
-            className='col-span-2 lg:col-span-1'
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }
-

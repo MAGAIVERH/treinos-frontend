@@ -51,10 +51,10 @@ export default async function ProfilePage() {
   ];
 
   return (
-    <>
+    <div className='flex min-h-0 flex-1 flex-col'>
       <AppHeader variant='title' className='lg:hidden' />
 
-      <div className='flex flex-col gap-5 pt-5 lg:grid lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start lg:gap-8 lg:pt-6'>
+      <div className='flex min-h-0 flex-1 flex-col gap-5 pt-5 lg:grid lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start lg:gap-8 lg:pt-6'>
         <div className='flex flex-col items-center gap-5 rounded-4xl border border-border bg-primary/8 p-6 lg:sticky lg:top-6'>
           <Avatar className='size-20 lg:size-24'>
             <AvatarImage src={user.image ?? undefined} alt={user.name} />
@@ -72,8 +72,8 @@ export default async function ProfilePage() {
           </div>
         </div>
 
-        <div className='flex flex-col gap-5'>
-          <div className='grid w-full grid-cols-2 gap-3 lg:grid-cols-3'>
+        <div className='flex min-h-0 flex-1 flex-col gap-5'>
+          <div className='grid w-full grid-cols-2 gap-3 lg:grid-cols-2'>
             {stats.map((stat) => {
               const Icon = stat.icon;
               return (
@@ -97,10 +97,11 @@ export default async function ProfilePage() {
             })}
           </div>
 
-          <LogoutButton />
+          <div className='mt-auto border-t border-border pt-5 lg:mt-0'>
+            <LogoutButton />
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
-

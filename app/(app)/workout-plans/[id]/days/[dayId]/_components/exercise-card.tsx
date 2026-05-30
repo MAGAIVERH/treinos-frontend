@@ -32,7 +32,7 @@ export function ExerciseCard({ exercise }: ExerciseCardProps) {
           <CircleHelp className='size-5 text-muted-foreground' />
         </Button>
       </div>
-      <div className='flex items-center gap-1.5'>
+      <div className='flex flex-wrap items-center gap-1.5'>
         <span className='rounded-full bg-muted px-2.5 py-1 font-heading text-xs font-semibold uppercase text-muted-foreground'>
           {exercise.sets} séries
         </span>

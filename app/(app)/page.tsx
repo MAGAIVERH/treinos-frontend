@@ -43,7 +43,7 @@ export default async function Home() {
   const userName = session.data.user.name?.split(' ')[0] ?? '';
 
   return (
-    <div className='flex flex-col gap-5 pt-0 lg:grid lg:grid-cols-2 lg:gap-6 lg:pt-5'>
+    <div className='flex flex-1 flex-col gap-5 pt-0 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:pt-5'>
       <div className='relative -mx-5 flex h-74 shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5 lg:mx-0 lg:h-96 lg:rounded-4xl'>
         <div className='absolute inset-0' aria-hidden='true'>
           <Image
@@ -62,10 +62,7 @@ export default async function Home() {
           />
         </div>
 
-        <p
-          className='relative text-[22px] uppercase leading-[1.15] text-background'
-          style={{ fontFamily: 'var(--font-anton)' }}
-        >
+        <p className='relative text-[22px] uppercase leading-[1.15] text-background font-anton'>
           Fit.ai
         </p>
 
@@ -86,7 +83,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className='flex flex-col gap-3 lg:justify-center'>
+      <div className='flex flex-col gap-3'>
         <div className='flex items-center justify-between'>
           <h2 className='font-heading text-lg font-semibold text-foreground'>
             Consistência
@@ -113,7 +110,7 @@ export default async function Home() {
       </div>
 
       {todayWorkoutDay && (
-        <div className='flex flex-col gap-3 pb-5 lg:col-span-2 lg:pb-0'>
+        <div className='flex flex-col gap-3 lg:col-span-2'>
           <div className='flex items-center justify-between'>
             <h2 className='font-heading text-lg font-semibold text-foreground'>
               Treino de Hoje
@@ -125,7 +122,7 @@ export default async function Home() {
 
           <Link
             href={`/workout-plans/${todayWorkoutDay.workoutPlanId}/days/${todayWorkoutDay.id}`}
-            className='block lg:max-w-xl'
+            className='block lg:max-w-2xl'
           >
             <WorkoutDayCard
               name={todayWorkoutDay.name}

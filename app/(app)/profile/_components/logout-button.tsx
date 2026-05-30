@@ -4,8 +4,13 @@ import { useRouter } from 'next/navigation';
 import { LogOut } from 'lucide-react';
 import { authClient } from '@/app/_lib/auth-client';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-export function LogoutButton() {
+interface LogoutButtonProps {
+  className?: string;
+}
+
+export function LogoutButton({ className }: LogoutButtonProps) {
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -23,7 +28,10 @@ export function LogoutButton() {
     <Button
       variant='ghost'
       onClick={handleLogout}
-      className='gap-2 text-destructive hover:text-destructive'
+      className={cn(
+        'h-12 w-full justify-center gap-2 text-destructive hover:bg-destructive/5 hover:text-destructive',
+        className,
+      )}
     >
       <span className='font-heading text-base font-semibold'>
         Sair da conta
