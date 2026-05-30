@@ -79,7 +79,7 @@ export function StatsHeatmap({ consistencyByDay, today }: StatsHeatmapProps) {
   const monthGroups = buildMonthGroups(today);
 
   return (
-    <div className='flex gap-1 overflow-x-auto rounded-xl border border-border p-5'>
+    <div className='flex gap-1 overflow-x-auto rounded-xl border border-border p-5 lg:overflow-visible lg:justify-between'>
       {monthGroups.map((group) => (
         <div key={group.label} className='flex flex-col gap-1.5'>
           <p className='font-heading text-xs text-muted-foreground'>

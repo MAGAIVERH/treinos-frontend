@@ -10,6 +10,67 @@ export type Get200 = {
   message: string;
 };
 
+export type ChatWithAiBodyMessagesItemRole =
+  (typeof ChatWithAiBodyMessagesItemRole)[keyof typeof ChatWithAiBodyMessagesItemRole];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const ChatWithAiBodyMessagesItemRole = {
+  user: "user",
+  assistant: "assistant",
+  system: "system",
+} as const;
+
+export type ChatWithAiBodyMessagesItemPartsItem = { [key: string]: unknown };
+
+export type ChatWithAiBodyMessagesItem = {
+  id: string;
+  parts: ChatWithAiBodyMessagesItemPartsItem[];
+  role: ChatWithAiBodyMessagesItemRole;
+};
+
+export type ChatWithAiBody = {
+  messages: ChatWithAiBodyMessagesItem[];
+};
+
+export type GetConversation500 = {
+  code: string;
+  error: string;
+};
+
+export type GetConversation401 = {
+  code: string;
+  error: string;
+};
+
+export type GetConversation200 = {
+  /**
+   * @nullable
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  conversationId: string | null;
+  messages: GetConversation200MessagesItem[];
+};
+
+export type GetConversation200MessagesItemRole =
+  (typeof GetConversation200MessagesItemRole)[keyof typeof GetConversation200MessagesItemRole];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetConversation200MessagesItemRole = {
+  user: "user",
+  assistant: "assistant",
+  system: "system",
+} as const;
+
+export type GetConversation200MessagesItemPartsItem = {
+  [key: string]: unknown;
+};
+
+export type GetConversation200MessagesItem = {
+  id: string;
+  parts: GetConversation200MessagesItemPartsItem[];
+  role: GetConversation200MessagesItemRole;
+};
+
 export type UpdateWorkoutSession500 = {
   code: string;
   error: string;
@@ -214,6 +275,19 @@ export const CreateWorkoutPlan201WorkoutDaysItemWeekDay = {
   Sunday: "Sunday",
 } as const;
 
+export type CreateWorkoutPlan201WorkoutDaysItemExercisesItem = {
+  /** @minLength 1 */
+  name: string;
+  /** @minimum 0 */
+  order: number;
+  /** @minimum 1 */
+  reps: number;
+  /** @minimum 1 */
+  restTimeInSeconds: number;
+  /** @minimum 1 */
+  sets: number;
+};
+
 export type CreateWorkoutPlan201WorkoutDaysItem = {
   coverImageUrl?: string;
   /** @minimum 1 */
@@ -231,19 +305,6 @@ export type CreateWorkoutPlan201 = {
   /** @minLength 1 */
   name: string;
   workoutDays: CreateWorkoutPlan201WorkoutDaysItem[];
-};
-
-export type CreateWorkoutPlan201WorkoutDaysItemExercisesItem = {
-  /** @minLength 1 */
-  name: string;
-  /** @minimum 0 */
-  order: number;
-  /** @minimum 1 */
-  reps: number;
-  /** @minimum 1 */
-  restTimeInSeconds: number;
-  /** @minimum 1 */
-  sets: number;
 };
 
 export type CreateWorkoutPlanBody = {
@@ -795,23 +856,50 @@ export const updateWorkoutSession = async (
 };
 
 /**
+ * @summary Get authenticated user conversation history
+ */
+export type getConversationResponse = {
+  data: GetConversation200;
+  status: number;
+};
+
+export const getGetConversationUrl = () => {
+  return `/ai/conversation`;
+};
+
+export const getConversation = async (
+  options?: RequestInit,
+): Promise<getConversationResponse> => {
+  return customFetch<Promise<getConversationResponse>>(
+    getGetConversationUrl(),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+/**
  * @summary Chat with AI personal trainer
  */
-export type postAiResponse = {
+export type chatWithAiResponse = {
   data: void;
   status: number;
 };
 
-export const getPostAiUrl = () => {
+export const getChatWithAiUrl = () => {
   return `/ai/`;
 };
 
-export const postAi = async (
+export const chatWithAi = async (
+  chatWithAiBody: ChatWithAiBody,
   options?: RequestInit,
-): Promise<postAiResponse> => {
-  return customFetch<Promise<postAiResponse>>(getPostAiUrl(), {
+): Promise<chatWithAiResponse> => {
+  return customFetch<Promise<chatWithAiResponse>>(getChatWithAiUrl(), {
     ...options,
     method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(chatWithAiBody),
   });
 };
 

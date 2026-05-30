@@ -1,16 +1,13 @@
 import { redirect } from 'next/navigation';
 import { authClient } from '@/app/_lib/auth-client';
 import { headers } from 'next/headers';
-
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Flame } from 'lucide-react';
-
-import { ConsistencyTracker } from './_components/consistency-tracker';
-import { WorkoutDayCard } from './_components/workout-day-card';
-import { BottomNav } from './_components/bottom-nav';
-import { getHomeData, getUserTrainData } from './_lib/api/fetch-generated';
+import { ConsistencyTracker } from '../_components/consistency-tracker';
+import { WorkoutDayCard } from '../_components/workout-day-card';
+import { getHomeData, getUserTrainData } from '../_lib/api/fetch-generated';
 
 export default async function Home() {
   const session = await authClient.getSession({
@@ -27,7 +24,7 @@ export default async function Home() {
     getUserTrainData(),
   ]);
 
-  if (homeData.status === 401) {
+  if (homeData.status === 401 || trainData.status === 401) {
     redirect('/auth');
   }
 
@@ -46,8 +43,8 @@ export default async function Home() {
   const userName = session.data.user.name?.split(' ')[0] ?? '';
 
   return (
-    <div className='flex min-h-svh flex-col bg-background pb-24'>
-      <div className='relative flex h-74 shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5'>
+    <div className='flex flex-col gap-5 pt-0 lg:grid lg:grid-cols-2 lg:gap-6 lg:pt-5'>
+      <div className='relative -mx-5 flex h-74 shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5 lg:mx-0 lg:h-96 lg:rounded-4xl'>
         <div className='absolute inset-0' aria-hidden='true'>
           <Image
             src='/home-banner.jpg'
@@ -74,7 +71,7 @@ export default async function Home() {
 
         <div className='relative flex w-full items-end justify-between'>
           <div className='flex flex-col gap-1.5'>
-            <h1 className='font-heading text-2xl font-semibold leading-[1.05] text-background'>
+            <h1 className='font-heading text-2xl font-semibold leading-[1.05] text-background lg:text-3xl'>
               Olá, {userName}
             </h1>
             <p className='font-heading text-sm leading-[1.15] text-background/70'>
@@ -89,12 +86,12 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className='flex flex-col gap-3 px-5 pt-5'>
+      <div className='flex flex-col gap-3 lg:justify-center'>
         <div className='flex items-center justify-between'>
           <h2 className='font-heading text-lg font-semibold text-foreground'>
             Consistência
           </h2>
-          <button className='font-heading text-xs text-primary'>
+          <button type='button' className='font-heading text-xs text-primary'>
             Ver histórico
           </button>
         </div>
@@ -116,18 +113,19 @@ export default async function Home() {
       </div>
 
       {todayWorkoutDay && (
-        <div className='flex flex-col gap-3 p-5'>
+        <div className='flex flex-col gap-3 pb-5 lg:col-span-2 lg:pb-0'>
           <div className='flex items-center justify-between'>
             <h2 className='font-heading text-lg font-semibold text-foreground'>
               Treino de Hoje
             </h2>
-            <button className='font-heading text-xs text-primary'>
+            <button type='button' className='font-heading text-xs text-primary'>
               Ver treinos
             </button>
           </div>
 
           <Link
             href={`/workout-plans/${todayWorkoutDay.workoutPlanId}/days/${todayWorkoutDay.id}`}
+            className='block lg:max-w-xl'
           >
             <WorkoutDayCard
               name={todayWorkoutDay.name}
@@ -141,8 +139,6 @@ export default async function Home() {
           </Link>
         </div>
       )}
-
-      <BottomNav />
     </div>
   );
 }

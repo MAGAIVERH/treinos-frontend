@@ -2,9 +2,14 @@
 
 import { authClient } from '@/app/_lib/auth-client';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
-export const SignInWithGoogle = () => {
+interface SignInWithGoogleProps {
+  className?: string;
+}
+
+export const SignInWithGoogle = ({ className }: SignInWithGoogleProps) => {
   const handleGoogleLogin = async () => {
     await authClient.signIn.social({
       provider: 'google',
@@ -15,7 +20,10 @@ export const SignInWithGoogle = () => {
   return (
     <Button
       onClick={handleGoogleLogin}
-      className='h-9.5 rounded-full bg-white px-6 text-black hover:bg-white/90'
+      className={cn(
+        'h-11 rounded-full bg-white px-8 text-base text-black shadow-sm hover:bg-white/90 lg:h-12 lg:min-w-72 lg:border lg:border-border lg:shadow-md',
+        className,
+      )}
     >
       <Image
         src='/google-icon.svg'

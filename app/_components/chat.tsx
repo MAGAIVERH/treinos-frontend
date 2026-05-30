@@ -2,9 +2,9 @@
 
 import { useEffect, useRef } from 'react';
 import { useChat } from '@ai-sdk/react';
-import { DefaultChatTransport } from 'ai';
+import { DefaultChatTransport, type UIMessage } from 'ai';
 import { useQueryStates, parseAsBoolean, parseAsString } from 'nuqs';
-import { Sparkles, X, ArrowUp } from 'lucide-react';
+import { ArrowUp, Loader2, Sparkles, X } from 'lucide-react';
 import { Streamdown } from 'streamdown';
 import 'streamdown/styles.css';
 import { useForm, useWatch } from 'react-hook-form';
@@ -14,8 +14,9 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-
-const SUGGESTED_MESSAGES = ['Monte meu plano de treino'];
+import { cn } from '@/lib/utils';
+import { useConversationHistory } from '@/app/_hooks/use-conversation-history';
+import { useChatSuggestions } from '@/app/_hooks/use-chat-suggestions';
 
 const chatFormSchema = z.object({
   message: z.string().min(1),
@@ -28,13 +29,116 @@ interface ChatProps {
   initialMessage?: string;
 }
 
-export function Chat({ embedded = false, initialMessage }: ChatProps) {
+interface ChatContentProps {
+  embedded?: boolean;
+  initialMessage?: string;
+  conversationId: string | null;
+  initialMessages: UIMessage[];
+  onClose: () => void;
+}
+
+interface ChatResponsiveShellProps {
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+function ChatResponsiveShell({ onClose, children }: ChatResponsiveShellProps) {
+  return (
+    <>
+      <button
+        type='button'
+        aria-label='Fechar chat'
+        className='fixed inset-0 z-60 bg-foreground/30 lg:hidden'
+        onClick={onClose}
+      />
+
+      <div
+        className={cn(
+          'fixed z-[60] flex flex-col overflow-hidden border border-border bg-background shadow-xl',
+          'inset-x-3 top-20 bottom-0 rounded-t-4xl',
+          'lg:inset-x-auto lg:inset-y-0 lg:right-0 lg:top-0 lg:bottom-0 lg:z-50 lg:w-[400px] lg:rounded-none lg:border-0 lg:border-l',
+        )}
+      >
+        {children}
+      </div>
+    </>
+  );
+}
+
+function ChatHeader({
+  embedded,
+  onClose,
+}: {
+  embedded?: boolean;
+  onClose: () => void;
+}) {
+  return (
+    <div className='flex shrink-0 items-center justify-between border-b border-border p-5'>
+      <div className='flex items-center gap-2'>
+        <div className='flex items-center justify-center rounded-full border border-primary/8 bg-primary/8 p-3'>
+          <Sparkles className='size-4.5 text-primary' />
+        </div>
+        <div className='flex flex-col gap-1.5'>
+          <span className='font-heading text-base font-semibold text-foreground'>
+            Coach AI
+          </span>
+          <div className='flex items-center gap-1'>
+            <div className='size-2 rounded-full bg-online' />
+            <span className='font-heading text-xs text-primary'>Online</span>
+          </div>
+        </div>
+      </div>
+      {embedded ? (
+        <Button variant='ghost' size='sm' asChild>
+          <Link href='/'>Acessar FIT.AI</Link>
+        </Button>
+      ) : (
+        <Button variant='ghost' size='icon' onClick={onClose}>
+          <X className='size-6 text-foreground' />
+        </Button>
+      )}
+    </div>
+  );
+}
+
+function ChatLoadingState({
+  embedded,
+  onClose,
+}: {
+  embedded?: boolean;
+  onClose: () => void;
+}) {
+  return (
+    <div
+      className={cn(
+        'flex h-full min-h-0 flex-col bg-background',
+        embedded && 'h-svh',
+      )}
+    >
+      <ChatHeader embedded={embedded} onClose={onClose} />
+      <div className='flex flex-1 items-center justify-center'>
+        <Loader2 className='size-8 animate-spin text-primary' />
+      </div>
+    </div>
+  );
+}
+
+function ChatContent({
+  embedded = false,
+  initialMessage,
+  conversationId,
+  initialMessages,
+  onClose,
+}: ChatContentProps) {
   const [chatParams, setChatParams] = useQueryStates({
     chat_open: parseAsBoolean.withDefault(false),
     chat_initial_message: parseAsString,
   });
+  const suggestedMessages = useChatSuggestions();
 
   const { messages, sendMessage, status } = useChat({
+    id: conversationId ?? 'pending-conversation',
+    messages: initialMessages,
     transport: new DefaultChatTransport({
       api: `/api/ai`,
       credentials: 'include',
@@ -56,11 +160,16 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
   const initialMessageSentRef = useRef(false);
 
   useEffect(() => {
-    if (embedded && initialMessage && !initialMessageSentRef.current) {
+    if (
+      embedded &&
+      initialMessage &&
+      initialMessages.length === 0 &&
+      !initialMessageSentRef.current
+    ) {
       initialMessageSentRef.current = true;
       sendMessage({ text: initialMessage });
     }
-  }, [embedded, initialMessage, sendMessage]);
+  }, [embedded, initialMessage, initialMessages.length, sendMessage]);
 
   useEffect(() => {
     if (
@@ -91,12 +200,6 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  if (!embedded && !chatParams.chat_open) return null;
-
-  const handleClose = () => {
-    setChatParams({ chat_open: false, chat_initial_message: null });
-  };
-
   const onSubmit = (values: ChatFormValues) => {
     sendMessage({ text: values.message });
     form.reset();
@@ -109,41 +212,16 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
   const isStreaming = status === 'streaming';
   const isLoading = status === 'submitted' || isStreaming;
 
-  const chatContent = (
+  return (
     <div
-      className={
-        embedded
-          ? 'flex h-svh flex-col bg-background'
-          : 'flex flex-1 flex-col overflow-hidden rounded-4xl bg-background'
-      }
+      className={cn(
+        'flex h-full min-h-0 flex-col bg-background',
+        embedded && 'h-svh',
+      )}
     >
-      <div className='flex shrink-0 items-center justify-between border-b border-border p-5'>
-        <div className='flex items-center gap-2'>
-          <div className='flex items-center justify-center rounded-full bg-primary/8 border border-primary/8 p-3'>
-            <Sparkles className='size-4.5 text-primary' />
-          </div>
-          <div className='flex flex-col gap-1.5'>
-            <span className='font-heading text-base font-semibold text-foreground'>
-              Coach AI
-            </span>
-            <div className='flex items-center gap-1'>
-              <div className='size-2 rounded-full bg-online' />
-              <span className='font-heading text-xs text-primary'>Online</span>
-            </div>
-          </div>
-        </div>
-        {embedded ? (
-          <Button variant='ghost' size='sm' asChild>
-            <Link href='/'>Acessar FIT.AI</Link>
-          </Button>
-        ) : (
-          <Button variant='ghost' size='icon' onClick={handleClose}>
-            <X className='size-6 text-foreground' />
-          </Button>
-        )}
-      </div>
+      <ChatHeader embedded={embedded} onClose={onClose} />
 
-      <div className='flex-1 overflow-y-auto pb-5'>
+      <div className='min-h-0 flex-1 overflow-y-auto overscroll-contain'>
         {messages.map((message) => (
           <div
             key={message.id}
@@ -191,12 +269,13 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className='flex shrink-0 flex-col gap-3'>
+      <div className='shrink-0 border-t border-border bg-background'>
         {messages.length === 0 && (
-          <div className='flex gap-2.5 overflow-x-auto px-5'>
-            {SUGGESTED_MESSAGES.map((suggestion) => (
+          <div className='flex gap-2.5 overflow-x-auto px-5 pt-3'>
+            {suggestedMessages.map((suggestion) => (
               <button
                 key={suggestion}
+                type='button'
                 onClick={() => handleSuggestion(suggestion)}
                 className='whitespace-nowrap rounded-full bg-primary/10 px-4 py-2 font-heading text-sm text-foreground'
               >
@@ -209,7 +288,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className='flex items-center gap-2 border-t border-border p-5'
+            className='flex items-center gap-2 p-5'
           >
             <FormField
               control={form.control}
@@ -239,19 +318,41 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
       </div>
     </div>
   );
+}
 
-  if (embedded) return chatContent;
+export function Chat({ embedded = false, initialMessage }: ChatProps) {
+  const [chatParams, setChatParams] = useQueryStates({
+    chat_open: parseAsBoolean.withDefault(false),
+    chat_initial_message: parseAsString,
+  });
+  const { conversationId, messages: initialMessages, isLoading, unauthorized } =
+    useConversationHistory();
 
-  return (
-    <div className='fixed inset-0 z-60'>
-      <div
-        className='absolute inset-0 bg-foreground/30'
-        onClick={handleClose}
-      />
+  const handleClose = () => {
+    setChatParams({ chat_open: false, chat_initial_message: null });
+  };
 
-      <div className='absolute inset-x-4 bottom-4 top-40 flex flex-col'>
-        {chatContent}
-      </div>
-    </div>
+  useEffect(() => {
+    if (unauthorized) {
+      setChatParams({ chat_open: false, chat_initial_message: null });
+    }
+  }, [unauthorized, setChatParams]);
+
+  if (!embedded && !chatParams.chat_open) return null;
+
+  const panel = isLoading ? (
+    <ChatLoadingState embedded={embedded} onClose={handleClose} />
+  ) : (
+    <ChatContent
+      embedded={embedded}
+      initialMessage={initialMessage}
+      conversationId={conversationId}
+      initialMessages={initialMessages}
+      onClose={handleClose}
+    />
   );
+
+  if (embedded) return panel;
+
+  return <ChatResponsiveShell onClose={handleClose}>{panel}</ChatResponsiveShell>;
 }
