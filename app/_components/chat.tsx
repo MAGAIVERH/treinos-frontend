@@ -27,11 +27,13 @@ type ChatFormValues = z.infer<typeof chatFormSchema>;
 interface ChatProps {
   embedded?: boolean;
   initialMessage?: string;
+  showAccessLink?: boolean;
 }
 
 interface ChatContentProps {
   embedded?: boolean;
   initialMessage?: string;
+  showAccessLink?: boolean;
   conversationId: string | null;
   initialMessages: UIMessage[];
   onClose: () => void;
@@ -55,7 +57,7 @@ function ChatResponsiveShell({ onClose, children }: ChatResponsiveShellProps) {
       <div
         className={cn(
           'fixed z-[60] flex flex-col overflow-hidden border border-border bg-background shadow-xl',
-          'inset-x-3 top-20 bottom-0 rounded-t-4xl',
+          'inset-x-3 top-3 bottom-0 rounded-t-4xl',
           'lg:inset-x-auto lg:inset-y-0 lg:right-0 lg:top-0 lg:bottom-0 lg:z-50 lg:w-[400px] lg:rounded-none lg:border-0 lg:border-l',
         )}
       >
@@ -67,13 +69,15 @@ function ChatResponsiveShell({ onClose, children }: ChatResponsiveShellProps) {
 
 function ChatHeader({
   embedded,
+  showAccessLink = false,
   onClose,
 }: {
   embedded?: boolean;
+  showAccessLink?: boolean;
   onClose: () => void;
 }) {
   return (
-    <div className='flex shrink-0 items-center justify-between border-b border-border p-5'>
+    <div className='flex shrink-0 items-center justify-between border-b border-border p-5 pt-safe lg:pt-5'>
       <div className='flex items-center gap-2'>
         <div className='flex items-center justify-center rounded-full border border-primary/8 bg-primary/8 p-3'>
           <Sparkles className='size-4.5 text-primary' />
@@ -88,26 +92,28 @@ function ChatHeader({
           </div>
         </div>
       </div>
-      {embedded ? (
+      {embedded && showAccessLink ? (
         <Button variant='ghost' size='sm' asChild>
           <Link href='/'>Acessar FIT.AI</Link>
         </Button>
-      ) : (
+      ) : !embedded ? (
         <Button variant='ghost' size='icon' onClick={onClose}>
           <X className='size-6 text-foreground' />
         </Button>
-      )}
+      ) : null}
     </div>
   );
 }
 
 function ChatErrorState({
   embedded,
+  showAccessLink,
   onClose,
   message,
   onRetry,
 }: {
   embedded?: boolean;
+  showAccessLink?: boolean;
   onClose: () => void;
   message: string;
   onRetry?: () => void;
@@ -119,7 +125,11 @@ function ChatErrorState({
         embedded && 'h-svh',
       )}
     >
-      <ChatHeader embedded={embedded} onClose={onClose} />
+      <ChatHeader
+        embedded={embedded}
+        showAccessLink={showAccessLink}
+        onClose={onClose}
+      />
       <div className='flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center'>
         <p className='font-heading text-sm leading-relaxed text-muted-foreground'>
           {message}
@@ -136,9 +146,11 @@ function ChatErrorState({
 
 function ChatLoadingState({
   embedded,
+  showAccessLink,
   onClose,
 }: {
   embedded?: boolean;
+  showAccessLink?: boolean;
   onClose: () => void;
 }) {
   return (
@@ -148,7 +160,11 @@ function ChatLoadingState({
         embedded && 'h-svh',
       )}
     >
-      <ChatHeader embedded={embedded} onClose={onClose} />
+      <ChatHeader
+        embedded={embedded}
+        showAccessLink={showAccessLink}
+        onClose={onClose}
+      />
       <div className='flex flex-1 items-center justify-center'>
         <Loader2 className='size-8 animate-spin text-primary' />
       </div>
@@ -159,6 +175,7 @@ function ChatLoadingState({
 function ChatContent({
   embedded = false,
   initialMessage,
+  showAccessLink = false,
   conversationId,
   initialMessages,
   onClose,
@@ -255,7 +272,11 @@ function ChatContent({
         embedded && 'h-svh',
       )}
     >
-      <ChatHeader embedded={embedded} onClose={onClose} />
+      <ChatHeader
+        embedded={embedded}
+        showAccessLink={showAccessLink}
+        onClose={onClose}
+      />
 
       <div className='min-h-0 flex-1 overflow-y-auto overscroll-contain'>
         {chatError ? (
@@ -271,18 +292,18 @@ function ChatContent({
         {messages.map((message) => (
           <div
             key={message.id}
-            className={
+            className={cn(
+              'flex flex-col pt-5',
               message.role === 'assistant'
-                ? 'flex flex-col items-start pl-5 pr-15 pt-5'
-                : 'flex flex-col items-end pl-15 pr-5 pt-5'
-            }
+                ? 'items-start px-6 lg:px-5'
+                : 'items-end px-6 lg:px-5',
+            )}
           >
             <div
-              className={
-                message.role === 'assistant'
-                  ? 'rounded-xl bg-secondary p-3'
-                  : 'rounded-xl bg-primary p-3'
-              }
+              className={cn(
+                'max-w-[85%] rounded-xl p-3',
+                message.role === 'assistant' ? 'bg-secondary' : 'bg-primary',
+              )}
             >
               {message.role === 'assistant' ? (
                 message.parts.map((part, index) =>
@@ -315,9 +336,9 @@ function ChatContent({
         <div ref={messagesEndRef} />
       </div>
 
-      <div className='shrink-0 border-t border-border bg-background'>
+      <div className='shrink-0 border-t border-border bg-background pb-safe'>
         {messages.length === 0 && (
-          <div className='flex gap-2.5 overflow-x-auto px-5 pt-3'>
+          <div className='flex gap-2.5 overflow-x-auto scroll-pe-6 px-5 pe-6 pt-3'>
             {suggestedMessages.map((suggestion) => (
               <button
                 key={suggestion}
@@ -366,7 +387,11 @@ function ChatContent({
   );
 }
 
-export function Chat({ embedded = false, initialMessage }: ChatProps) {
+export function Chat({
+  embedded = false,
+  initialMessage,
+  showAccessLink = false,
+}: ChatProps) {
   const [chatParams, setChatParams] = useQueryStates({
     chat_open: parseAsBoolean.withDefault(false),
     chat_initial_message: parseAsString,
@@ -393,16 +418,22 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
   if (!embedded && !chatParams.chat_open) return null;
 
   const panel = isLoading ? (
-    <ChatLoadingState embedded={embedded} onClose={handleClose} />
+    <ChatLoadingState
+      embedded={embedded}
+      showAccessLink={showAccessLink}
+      onClose={handleClose}
+    />
   ) : unauthorized ? (
     <ChatErrorState
       embedded={embedded}
+      showAccessLink={showAccessLink}
       onClose={handleClose}
       message='Sua sessão expirou. Faça login novamente para usar o Coach AI.'
     />
   ) : historyError ? (
     <ChatErrorState
       embedded={embedded}
+      showAccessLink={showAccessLink}
       onClose={handleClose}
       message='Não foi possível carregar o chat. Tente novamente.'
       onRetry={() => window.location.reload()}
@@ -411,6 +442,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
     <ChatContent
       embedded={embedded}
       initialMessage={initialMessage}
+      showAccessLink={showAccessLink}
       conversationId={conversationId}
       initialMessages={initialMessages}
       onClose={handleClose}
