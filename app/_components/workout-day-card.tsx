@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { Calendar, Timer, Dumbbell } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import type { GetHomeData200TodayWorkoutDayWeekDay } from '@/app/_lib/api/fetch-generated';
 
 const WEEKDAY_LABELS: Record<string, string> = {
@@ -18,6 +19,7 @@ interface WorkoutDayCardProps {
   estimatedDurationInSeconds: number;
   exercisesCount: number;
   coverImageUrl?: string;
+  variant?: 'default' | 'compact';
 }
 
 export function WorkoutDayCard({
@@ -26,11 +28,20 @@ export function WorkoutDayCard({
   estimatedDurationInSeconds,
   exercisesCount,
   coverImageUrl,
+  variant = 'default',
 }: WorkoutDayCardProps) {
   const durationInMinutes = Math.round(estimatedDurationInSeconds / 60);
+  const isCompact = variant === 'compact';
 
   return (
-    <div className='relative flex h-50 w-full flex-col items-start justify-between overflow-hidden rounded-xl p-5 lg:h-full lg:min-h-56'>
+    <div
+      className={cn(
+        'relative flex w-full flex-col items-start justify-between overflow-hidden rounded-xl',
+        isCompact
+          ? 'aspect-[16/9] max-h-[20svh] p-4 lg:max-h-[22vh]'
+          : 'h-50 p-5 lg:h-full lg:min-h-56',
+      )}
+    >
       {coverImageUrl && (
         <Image
           src={coverImageUrl}
@@ -49,7 +60,12 @@ export function WorkoutDayCard({
         </div>
       </div>
       <div className='relative flex flex-col gap-2'>
-        <h3 className='font-heading text-2xl font-semibold leading-[1.05] text-background'>
+        <h3
+          className={cn(
+            'font-heading font-semibold leading-[1.05] text-background',
+            isCompact ? 'text-xl' : 'text-2xl',
+          )}
+        >
           {name}
         </h3>
         <div className='flex items-start gap-2'>

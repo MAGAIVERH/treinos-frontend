@@ -43,8 +43,8 @@ export default async function Home() {
   const userName = session.data.user.name?.split(' ')[0] ?? '';
 
   return (
-    <div className='flex min-h-0 flex-1 flex-col gap-3 lg:gap-4'>
-      <div className='relative flex h-74 shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5 lg:h-96 lg:rounded-4xl'>
+    <div className='flex shrink-0 flex-col gap-3 lg:gap-4'>
+      <div className='relative flex aspect-[16/9] w-full max-h-[26svh] shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5 lg:aspect-[21/9] lg:max-h-[28vh] lg:rounded-4xl'>
         <div className='absolute inset-0' aria-hidden='true'>
           <Image
             src='/home-banner.jpg'
@@ -83,7 +83,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className='flex flex-col gap-3'>
+      <div className='flex shrink-0 flex-col gap-2'>
         <div className='flex items-center justify-between'>
           <h2 className='font-heading text-lg font-semibold text-foreground'>
             Consistência
@@ -93,14 +93,14 @@ export default async function Home() {
           </button>
         </div>
 
-        <div className='flex items-center gap-3'>
-          <div className='flex-1 rounded-xl border border-border p-5'>
+        <div className='flex h-[72px] items-center gap-2'>
+          <div className='flex h-full flex-1 items-center rounded-xl border border-border p-3 lg:p-4'>
             <ConsistencyTracker
               consistencyByDay={consistencyByDay}
               today={today}
             />
           </div>
-          <div className='flex items-center gap-2 self-stretch rounded-xl bg-streak px-5 py-2'>
+          <div className='flex items-center gap-2 rounded-xl bg-streak px-3 py-2'>
             <Flame className='size-5 text-streak-foreground' />
             <span className='font-heading text-base font-semibold text-foreground'>
               {workoutStreak}
@@ -110,7 +110,7 @@ export default async function Home() {
       </div>
 
       {todayWorkoutDay && (
-        <div className='flex flex-col gap-3'>
+        <div className='flex shrink-0 flex-col gap-2'>
           <div className='flex items-center justify-between'>
             <h2 className='font-heading text-lg font-semibold text-foreground'>
               Treino de Hoje
@@ -125,6 +125,7 @@ export default async function Home() {
             className='block lg:max-w-2xl'
           >
             <WorkoutDayCard
+              variant='compact'
               name={todayWorkoutDay.name}
               weekDay={todayWorkoutDay.weekDay}
               estimatedDurationInSeconds={

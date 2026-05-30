@@ -30,7 +30,7 @@ export function AppShellClient({
           chatOpen && 'lg:pr-[400px]',
         )}
       >
-        <main className='mx-auto flex w-full max-w-5xl min-h-0 flex-1 flex-col px-5 lg:px-8'>
+        <main className='mx-auto flex w-full max-w-5xl min-h-0 flex-1 flex-col overflow-x-hidden px-5 lg:px-8'>
           {children}
         </main>
         <BottomNav calendarHref={calendarHref} />

@@ -26,12 +26,12 @@ export function ConsistencyTracker({
   const todayStr = today.format('YYYY-MM-DD');
 
   return (
-    <div className='flex items-center justify-between'>
+    <div className='flex w-full items-center justify-between'>
       {weekDates.map((date, index) => {
         const dateStr = date.format('YYYY-MM-DD');
         const dayData = consistencyByDay[dateStr];
         return (
-          <div key={dateStr} className='flex flex-col items-center gap-1.5'>
+          <div key={dateStr} className='flex flex-col items-center gap-1'>
             <ConsistencySquare
               completed={dayData?.workoutDayCompleted ?? false}
               started={dayData?.workoutDayStarted ?? false}
