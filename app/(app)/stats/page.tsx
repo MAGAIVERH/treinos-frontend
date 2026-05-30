@@ -70,7 +70,7 @@ export default async function StatsPage() {
 
         <StatsHeatmap consistencyByDay={consistencyByDay} today={today} />
 
-        <div className='grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4'>
+        <div className='grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-4'>
           <StatCard
             icon={CircleCheck}
             value={String(completedWorkoutsCount)}

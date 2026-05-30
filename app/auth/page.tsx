@@ -56,11 +56,9 @@ export default async function AuthPage() {
       {/* Painel de login — sheet roxo no mobile, coluna direita no desktop */}
       <div className='relative z-10 flex min-h-0 flex-1 flex-col lg:min-h-svh lg:bg-background'>
         {/* Mobile — sheet sobre o hero */}
-        <div className='-mt-10 flex min-h-0 flex-1 flex-col justify-between rounded-t-4xl bg-primary px-5 pt-8 pb-safe lg:hidden'>
-          <div className='flex flex-1 items-center justify-center'>
-            <SignInWithGoogle className='w-full max-w-sm' />
-          </div>
-          <p className='pt-6 text-center font-heading text-xs leading-[1.4] text-primary-foreground/70'>
+        <div className='-mt-10 flex min-h-0 flex-1 flex-col justify-between gap-8 rounded-t-4xl bg-primary px-5 pt-8 pb-safe lg:hidden'>
+          <SignInWithGoogle className='w-full max-w-sm' />
+          <p className='text-center font-heading text-xs leading-[1.4] text-primary-foreground/70'>
             ©2026 Copyright FIT.AI. Todos os direitos reservados
           </p>
         </div>
