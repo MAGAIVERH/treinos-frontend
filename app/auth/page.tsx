@@ -16,7 +16,7 @@ export default async function AuthPage() {
   return (
     <div className='flex min-h-svh flex-col lg:grid lg:grid-cols-2 lg:grid-rows-1'>
       {/* Hero — coluna esquerda no desktop; topo no mobile */}
-      <div className='relative min-h-[42svh] shrink-0 overflow-hidden lg:min-h-svh'>
+      <div className='relative min-h-[36svh] shrink-0 overflow-hidden lg:min-h-svh'>
         <Image
           src='/login-bg.png'
           alt=''
@@ -52,7 +52,7 @@ export default async function AuthPage() {
       {/* Painel de login */}
       <div className='relative z-10 flex flex-1 flex-col lg:min-h-svh lg:bg-background'>
         {/* Mobile */}
-        <div className='flex flex-1 flex-col items-center gap-15 rounded-t-4xl bg-primary px-5 pb-10 pt-12 lg:hidden'>
+        <div className='-mt-8 flex min-h-0 flex-1 flex-col justify-between rounded-t-4xl bg-primary px-5 pb-10 pt-10 lg:hidden'>
           <div className='flex w-full max-w-md flex-col items-center gap-6'>
             <h1 className='w-full text-center font-heading text-[32px] font-semibold leading-[1.05] text-primary-foreground'>
               O app que vai transformar a forma como você treina.

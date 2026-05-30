@@ -101,6 +101,39 @@ function ChatHeader({
   );
 }
 
+function ChatErrorState({
+  embedded,
+  onClose,
+  message,
+  onRetry,
+}: {
+  embedded?: boolean;
+  onClose: () => void;
+  message: string;
+  onRetry?: () => void;
+}) {
+  return (
+    <div
+      className={cn(
+        'flex h-full min-h-0 flex-col bg-background',
+        embedded && 'h-svh',
+      )}
+    >
+      <ChatHeader embedded={embedded} onClose={onClose} />
+      <div className='flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center'>
+        <p className='font-heading text-sm leading-relaxed text-muted-foreground'>
+          {message}
+        </p>
+        {onRetry ? (
+          <Button type='button' variant='outline' onClick={onRetry}>
+            Tentar novamente
+          </Button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 function ChatLoadingState({
   embedded,
   onClose,
@@ -136,13 +169,16 @@ function ChatContent({
   });
   const suggestedMessages = useChatSuggestions();
 
-  const { messages, sendMessage, status } = useChat({
+  const { messages, sendMessage, status, error: chatError } = useChat({
     id: conversationId ?? 'pending-conversation',
     messages: initialMessages,
     transport: new DefaultChatTransport({
       api: `/api/ai`,
       credentials: 'include',
     }),
+    onError: (error) => {
+      console.error('Chat error:', error);
+    },
   });
 
   const form = useForm<ChatFormValues>({
@@ -222,6 +258,16 @@ function ChatContent({
       <ChatHeader embedded={embedded} onClose={onClose} />
 
       <div className='min-h-0 flex-1 overflow-y-auto overscroll-contain'>
+        {chatError ? (
+          <div className='px-5 pt-5'>
+            <div className='rounded-xl border border-destructive/20 bg-destructive/5 p-4'>
+              <p className='font-heading text-sm text-destructive'>
+                Não foi possível enviar sua mensagem. Tente novamente.
+              </p>
+            </div>
+          </div>
+        ) : null}
+
         {messages.map((message) => (
           <div
             key={message.id}
@@ -325,8 +371,14 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
     chat_open: parseAsBoolean.withDefault(false),
     chat_initial_message: parseAsString,
   });
-  const { conversationId, messages: initialMessages, isLoading, unauthorized } =
-    useConversationHistory();
+  const shouldLoadHistory = embedded || chatParams.chat_open;
+  const {
+    conversationId,
+    messages: initialMessages,
+    isLoading,
+    error: historyError,
+    unauthorized,
+  } = useConversationHistory({ enabled: shouldLoadHistory });
 
   const handleClose = () => {
     setChatParams({ chat_open: false, chat_initial_message: null });
@@ -342,6 +394,19 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
 
   const panel = isLoading ? (
     <ChatLoadingState embedded={embedded} onClose={handleClose} />
+  ) : unauthorized ? (
+    <ChatErrorState
+      embedded={embedded}
+      onClose={handleClose}
+      message='Sua sessão expirou. Faça login novamente para usar o Coach AI.'
+    />
+  ) : historyError ? (
+    <ChatErrorState
+      embedded={embedded}
+      onClose={handleClose}
+      message='Não foi possível carregar o chat. Tente novamente.'
+      onRetry={() => window.location.reload()}
+    />
   ) : (
     <ChatContent
       embedded={embedded}

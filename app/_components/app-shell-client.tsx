@@ -1,9 +1,11 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useQueryStates, parseAsBoolean } from 'nuqs';
 import { cn } from '@/lib/utils';
 import { BottomNav } from '@/app/_components/bottom-nav';
 import { SidebarNav } from '@/app/_components/sidebar-nav';
+import { Chat } from '@/app/_components/chat';
 
 interface AppShellClientProps {
   children: React.ReactNode;
@@ -33,6 +35,10 @@ export function AppShellClient({
         </main>
         <BottomNav calendarHref={calendarHref} />
       </div>
+
+      <Suspense>
+        <Chat />
+      </Suspense>
     </div>
   );
 }

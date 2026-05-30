@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import type { UIMessage } from 'ai';
 
 type ConversationHistoryState = {
@@ -31,20 +30,43 @@ function mapToUIMessages(
   }));
 }
 
-export function useConversationHistory() {
-  const router = useRouter();
+type UseConversationHistoryOptions = {
+  enabled?: boolean;
+};
+
+export function useConversationHistory({
+  enabled = true,
+}: UseConversationHistoryOptions = {}) {
   const [state, setState] = useState<ConversationHistoryState>({
     conversationId: null,
     messages: [],
-    isLoading: true,
+    isLoading: enabled,
     error: null,
     unauthorized: false,
   });
 
   useEffect(() => {
+    if (!enabled) {
+      setState({
+        conversationId: null,
+        messages: [],
+        isLoading: false,
+        error: null,
+        unauthorized: false,
+      });
+      return;
+    }
+
     let cancelled = false;
 
     async function loadConversation() {
+      setState((current) => ({
+        ...current,
+        isLoading: true,
+        error: null,
+        unauthorized: false,
+      }));
+
       try {
         const response = await fetch('/api/ai/conversation', {
           credentials: 'include',
@@ -59,7 +81,6 @@ export function useConversationHistory() {
             error: null,
             unauthorized: true,
           });
-          router.replace('/auth');
           return;
         }
 
@@ -96,7 +117,7 @@ export function useConversationHistory() {
     return () => {
       cancelled = true;
     };
-  }, [router]);
+  }, [enabled]);
 
   return state;
 }
