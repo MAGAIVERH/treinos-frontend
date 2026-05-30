@@ -1,14 +1,5 @@
 import { Calendar, Zap } from 'lucide-react';
-
-const WEEKDAY_LABELS: Record<string, string> = {
-  MONDAY: 'SEGUNDA',
-  TUESDAY: 'TERÇA',
-  WEDNESDAY: 'QUARTA',
-  THURSDAY: 'QUINTA',
-  FRIDAY: 'SEXTA',
-  SATURDAY: 'SÁBADO',
-  SUNDAY: 'DOMINGO',
-};
+import { WEEKDAY_LABELS } from '@/app/_lib/weekday-labels';
 
 interface RestDayCardProps {
   weekDay: string;

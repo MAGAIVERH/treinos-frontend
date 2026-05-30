@@ -15,26 +15,10 @@ import { ExerciseCard } from './_components/exercise-card';
 import { StartWorkoutButton } from './_components/start-workout-button';
 import { CompleteWorkoutButton } from './_components/complete-workout-button';
 import { BackButton } from './_components/back-button';
-
-const WEEKDAY_LABELS: Record<string, string> = {
-  MONDAY: 'SEGUNDA',
-  TUESDAY: 'TERÇA',
-  WEDNESDAY: 'QUARTA',
-  THURSDAY: 'QUINTA',
-  FRIDAY: 'SEXTA',
-  SATURDAY: 'SÁBADO',
-  SUNDAY: 'DOMINGO',
-};
-
-const WEEKDAY_TITLE_LABELS: Record<string, string> = {
-  MONDAY: 'Segunda',
-  TUESDAY: 'Terça',
-  WEDNESDAY: 'Quarta',
-  THURSDAY: 'Quinta',
-  FRIDAY: 'Sexta',
-  SATURDAY: 'Sábado',
-  SUNDAY: 'Domingo',
-};
+import {
+  WEEKDAY_LABELS,
+  WEEKDAY_TITLE_LABELS,
+} from '@/app/_lib/weekday-labels';
 
 export default async function WorkoutDayPage({
   params,

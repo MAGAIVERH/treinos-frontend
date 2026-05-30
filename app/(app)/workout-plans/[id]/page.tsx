@@ -13,16 +13,7 @@ import { Goal } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { WorkoutDayCard } from '@/app/_components/workout-day-card';
 import { RestDayCard } from './_components/rest-day-card';
-
-const WEEKDAY_ORDER = [
-  'MONDAY',
-  'TUESDAY',
-  'WEDNESDAY',
-  'THURSDAY',
-  'FRIDAY',
-  'SATURDAY',
-  'SUNDAY',
-] as const;
+import { WEEKDAY_ORDER } from '@/app/_lib/weekday-labels';
 
 export default async function WorkoutPlanPage({
   params,
