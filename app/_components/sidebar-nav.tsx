@@ -28,15 +28,14 @@ export function SidebarNav({ calendarHref }: SidebarNavProps) {
   const activePage = getActiveNavPage(pathname);
 
   return (
-    <aside className='fixed inset-y-0 left-0 z-50 hidden w-60 flex-col border-r border-border bg-background px-4 py-6 lg:flex'>
-      <p
-        className='mb-8 px-3 text-[22px] uppercase leading-[1.15] text-foreground'
-        style={{ fontFamily: 'var(--font-anton)' }}
-      >
-        Fit.ai
-      </p>
+    <aside className='fixed inset-y-0 left-0 z-50 hidden w-60 flex-col border-r border-border bg-background lg:flex'>
+      <div className='shrink-0 border-b border-border p-5'>
+        <p className='text-[22px] uppercase leading-[1.15] text-foreground font-anton'>
+          Fit.ai
+        </p>
+      </div>
 
-      <nav className='flex flex-1 flex-col gap-1'>
+      <nav className='flex flex-1 flex-col gap-1 overflow-y-auto p-3'>
         {NAV_LINKS.map((item) => {
           const href = item.page === 'calendar' ? calendarHref : item.href;
           const isActive = activePage === item.page;
@@ -74,7 +73,7 @@ export function SidebarNav({ calendarHref }: SidebarNavProps) {
         })}
       </nav>
 
-      <div className='px-3 pt-4'>
+      <div className='shrink-0 border-t border-border p-5'>
         <ChatOpenButton variant='sidebar' />
       </div>
     </aside>

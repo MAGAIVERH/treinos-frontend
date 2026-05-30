@@ -26,11 +26,11 @@ export function AppShellClient({
 
       <div
         className={cn(
-          'flex min-h-svh flex-col pb-24 transition-[padding-right] duration-300 lg:pl-60 lg:pb-0',
+          'flex min-h-svh flex-col pb-nav transition-[padding-right] duration-300 lg:pl-60 lg:pb-0',
           chatOpen && 'lg:pr-[400px]',
         )}
       >
-        <main className='mx-auto flex w-full max-w-5xl flex-1 flex-col px-5 lg:px-8'>
+        <main className='mx-auto flex w-full max-w-5xl min-h-0 flex-1 flex-col px-5 lg:px-8'>
           {children}
         </main>
         <BottomNav calendarHref={calendarHref} />
