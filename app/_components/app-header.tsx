@@ -54,7 +54,7 @@ function HeroHeader({
   return (
     <div
       className={cn(
-        'relative -mx-5 flex h-74 shrink-0 flex-col overflow-hidden rounded-b-4xl lg:mx-0 lg:h-96 lg:rounded-4xl',
+        'relative flex aspect-[5/4] w-full max-w-full max-h-[44svh] shrink-0 flex-col overflow-hidden rounded-b-4xl lg:aspect-[21/9] lg:max-h-[28vh] lg:rounded-4xl',
         className,
       )}
     >

@@ -51,7 +51,7 @@ export default async function ProfilePage() {
   ];
 
   return (
-    <div className='flex min-h-0 flex-1 flex-col'>
+    <div className='flex min-h-0 flex-1 flex-col lg:h-full lg:min-h-0 lg:overflow-hidden'>
       <AppHeader variant='title' className='lg:hidden' />
 
       <div className='flex min-h-0 flex-1 flex-col gap-5 pt-5 lg:grid lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start lg:gap-8 lg:pt-6'>

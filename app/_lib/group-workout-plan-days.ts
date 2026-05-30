@@ -39,10 +39,8 @@ export function groupWorkoutPlanDays(
 }
 
 export function getDesktopGridClass(itemCount: number): string {
-  if (itemCount <= 3) return 'lg:grid-cols-3';
-  if (itemCount === 4) return 'lg:grid-cols-4';
-  if (itemCount === 5) return 'lg:grid-cols-5';
-  if (itemCount === 6) return 'lg:grid-cols-6';
-  if (itemCount === 7) return 'lg:grid-cols-4';
-  return 'lg:grid-cols-5';
+  if (itemCount <= 3) return 'lg:grid-cols-3 lg:grid-rows-1';
+  if (itemCount === 4) return 'lg:grid-cols-4 lg:grid-rows-1';
+  if (itemCount <= 6) return 'lg:grid-cols-3 lg:grid-rows-2';
+  return 'lg:grid-cols-4 lg:grid-rows-2';
 }

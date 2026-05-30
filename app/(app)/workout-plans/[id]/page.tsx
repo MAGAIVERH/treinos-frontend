@@ -51,8 +51,8 @@ export default async function WorkoutPlanPage({
   const desktopGridClass = getDesktopGridClass(dayGroups.length);
 
   return (
-    <div className='flex min-h-0 flex-1 flex-col'>
-      <div className='relative -mx-5 flex h-74 shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5 lg:mx-0 lg:h-96 lg:rounded-4xl'>
+    <div className='flex min-h-0 flex-1 flex-col lg:h-full lg:min-h-0 lg:overflow-hidden'>
+      <div className='relative flex aspect-[5/4] w-full max-w-full max-h-[44svh] shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5 lg:aspect-[21/9] lg:max-h-[28vh] lg:rounded-4xl'>
         <div className='absolute inset-0' aria-hidden='true'>
           <Image
             src='/workout-plan-banner.png'
@@ -89,7 +89,7 @@ export default async function WorkoutPlanPage({
 
       <div
         className={cn(
-          '-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 py-5 scroll-pl-5 [-ms-overflow-style:none] [scrollbar-width:none] lg:mx-0 lg:grid lg:items-stretch lg:gap-3 lg:overflow-visible lg:px-0 lg:py-6 [&::-webkit-scrollbar]:hidden',
+          'flex snap-x snap-mandatory gap-3 overflow-x-auto py-5 [-ms-overflow-style:none] [scrollbar-width:none] lg:min-h-0 lg:flex-1 lg:grid lg:items-stretch lg:gap-2 lg:overflow-hidden lg:py-3 [&::-webkit-scrollbar]:hidden',
           desktopGridClass,
         )}
       >
@@ -98,7 +98,7 @@ export default async function WorkoutPlanPage({
             return (
               <div
                 key={group.weekDays.join('-')}
-                className='h-full w-[min(320px,88vw)] shrink-0 snap-start lg:w-auto'
+                className='h-full w-[min(320px,88vw)] shrink-0 snap-start lg:min-h-0 lg:w-auto'
               >
                 <RestDayCard weekDays={group.weekDays} />
               </div>
@@ -110,13 +110,14 @@ export default async function WorkoutPlanPage({
           return (
             <div
               key={day.id}
-              className='h-full w-[min(320px,88vw)] shrink-0 snap-start lg:w-auto'
+              className='h-full w-[min(320px,88vw)] shrink-0 snap-start lg:min-h-0 lg:w-auto'
             >
               <Link
                 href={`/workout-plans/${id}/days/${day.id}`}
-                className='block h-full'
+                className='block h-full min-h-0'
               >
                 <WorkoutDayCard
+                  variant='plan'
                   name={day.name}
                   weekDay={day.weekDay}
                   estimatedDurationInSeconds={day.estimatedDurationInSeconds}

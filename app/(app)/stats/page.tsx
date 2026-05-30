@@ -56,10 +56,10 @@ export default async function StatsPage() {
   } = statsResponse.data;
 
   return (
-    <div className='flex min-h-0 flex-1 flex-col'>
+    <div className='flex min-h-0 flex-1 flex-col lg:h-full lg:min-h-0 lg:overflow-hidden'>
       <AppHeader variant='title' className='lg:hidden' />
 
-      <div className='pb-5 lg:pb-6'>
+      <div className='pb-5 lg:min-h-0 lg:flex-1 lg:overflow-hidden lg:pb-4'>
         <StreakBanner workoutStreak={workoutStreak} />
       </div>
 

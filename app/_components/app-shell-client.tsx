@@ -21,16 +21,16 @@ export function AppShellClient({
   });
 
   return (
-    <div className='min-h-svh bg-background'>
+    <div className='min-h-svh bg-background lg:h-svh lg:overflow-hidden'>
       <SidebarNav calendarHref={calendarHref} />
 
       <div
         className={cn(
-          'flex min-h-svh flex-col pb-nav transition-[padding-right] duration-300 lg:pl-60 lg:pb-0',
+          'flex min-h-svh flex-col pb-nav transition-[padding-right] duration-300 lg:h-full lg:min-h-0 lg:overflow-hidden lg:pl-60 lg:pb-0',
           chatOpen && 'lg:pr-[400px]',
         )}
       >
-        <main className='mx-auto flex w-full max-w-5xl min-h-0 flex-1 flex-col overflow-x-hidden px-5 lg:px-8'>
+        <main className='mx-auto flex w-full max-w-5xl min-h-0 flex-1 flex-col overflow-x-hidden px-5 lg:overflow-hidden lg:px-8'>
           {children}
         </main>
         <BottomNav calendarHref={calendarHref} />
