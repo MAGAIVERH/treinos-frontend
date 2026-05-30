@@ -43,8 +43,8 @@ export default async function Home() {
   const userName = session.data.user.name?.split(' ')[0] ?? '';
 
   return (
-    <div className='flex flex-1 flex-col gap-5 pt-0 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:pt-5'>
-      <div className='relative -mx-5 flex h-74 shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5 lg:mx-0 lg:h-96 lg:rounded-4xl'>
+    <div className='flex min-h-0 flex-1 flex-col gap-3 lg:gap-4'>
+      <div className='relative flex h-74 shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5 lg:h-96 lg:rounded-4xl'>
         <div className='absolute inset-0' aria-hidden='true'>
           <Image
             src='/home-banner.jpg'
@@ -110,7 +110,7 @@ export default async function Home() {
       </div>
 
       {todayWorkoutDay && (
-        <div className='flex flex-col gap-3 lg:col-span-2'>
+        <div className='flex flex-col gap-3'>
           <div className='flex items-center justify-between'>
             <h2 className='font-heading text-lg font-semibold text-foreground'>
               Treino de Hoje
