@@ -29,16 +29,18 @@ export default async function AuthPage() {
           aria-hidden='true'
         />
 
-        <div className='relative z-10 flex h-full flex-col justify-between p-5 pt-safe lg:p-12 lg:pb-14'>
-          <Image
-            src='/fit-ai-logo.svg'
-            alt='FIT.AI'
-            width={85}
-            height={38}
-            className='shrink-0 lg:hidden'
-          />
+        <div className='relative z-10 flex h-full flex-col p-5 pt-safe lg:p-12 lg:pb-14'>
+          <div className='flex shrink-0 justify-center pt-3 lg:pt-4'>
+            <Image
+              src='/fit-ai-logo.svg'
+              alt='FIT.AI'
+              width={85}
+              height={38}
+              className='shrink-0'
+            />
+          </div>
 
-          <div className='hidden max-w-lg lg:mt-auto lg:block'>
+          <div className='mt-auto hidden max-w-lg lg:block'>
             <p className='font-heading text-[11px] font-semibold uppercase tracking-[0.24em] text-white/60'>
               Personal trainer com IA
             </p>
