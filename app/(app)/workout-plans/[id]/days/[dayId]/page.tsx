@@ -70,8 +70,8 @@ export default async function WorkoutDayPage({
       : WEEKDAY_TITLE_LABELS[weekDay];
 
   return (
-    <div className='flex min-h-0 flex-1 flex-col gap-4 lg:gap-6'>
-      <div className='flex items-center justify-between'>
+    <div className='flex min-h-0 flex-1 flex-col gap-4 lg:h-full lg:min-h-0 lg:overflow-hidden lg:gap-6'>
+      <div className='flex shrink-0 items-center justify-between'>
         <BackButton />
         <h1 className='font-heading text-lg font-semibold text-foreground'>
           {pageTitle}
@@ -79,9 +79,9 @@ export default async function WorkoutDayPage({
         <div className='size-6' aria-hidden='true' />
       </div>
 
-      <div className='flex min-h-0 flex-1 flex-col gap-4 lg:grid lg:grid-cols-[minmax(280px,340px)_minmax(0,1fr)] lg:items-start lg:gap-6'>
-        <aside className='flex flex-col gap-4 lg:sticky lg:top-6'>
-          <div className='relative flex h-50 w-full flex-col items-start justify-between overflow-hidden rounded-xl p-5 lg:h-64'>
+      <div className='flex min-h-0 flex-1 flex-col gap-4 lg:grid lg:min-h-0 lg:grid-cols-[minmax(280px,340px)_minmax(0,1fr)] lg:items-stretch lg:gap-6 lg:overflow-hidden'>
+        <aside className='flex min-h-0 flex-col gap-4 lg:h-full lg:overflow-hidden'>
+          <div className='relative flex h-50 w-full min-h-0 flex-col items-start justify-between overflow-hidden rounded-xl p-5 lg:h-auto lg:min-h-0 lg:flex-[3]'>
             {coverImageUrl && (
               <Image
                 src={coverImageUrl}
@@ -142,32 +142,34 @@ export default async function WorkoutDayPage({
             </div>
           </div>
 
-          <div className='hidden rounded-xl border border-border bg-primary/8 p-5 lg:block'>
-            <h3 className='font-heading text-sm font-semibold text-foreground'>
-              Resumo da sessão
-            </h3>
-            <div className='mt-4 flex flex-col gap-3'>
-              <div className='flex items-center justify-between font-heading text-sm'>
-                <span className='text-muted-foreground'>Duração estimada</span>
-                <span className='font-semibold text-foreground'>
-                  {durationInMinutes} min
-                </span>
-              </div>
-              <div className='flex items-center justify-between font-heading text-sm'>
-                <span className='text-muted-foreground'>Exercícios</span>
-                <span className='font-semibold text-foreground'>
-                  {exercises.length}
-                </span>
-              </div>
-              <div className='flex items-center justify-between font-heading text-sm'>
-                <span className='text-muted-foreground'>Status</span>
-                <span className='font-semibold text-foreground'>
-                  {hasCompletedSession
-                    ? 'Concluído'
-                    : hasInProgressSession
-                      ? 'Em andamento'
-                      : 'Não iniciado'}
-                </span>
+          <div className='hidden min-h-0 flex-1 flex-col rounded-xl border border-border bg-primary/8 p-5 lg:flex lg:justify-between'>
+            <div>
+              <h3 className='font-heading text-sm font-semibold text-foreground'>
+                Resumo da sessão
+              </h3>
+              <div className='mt-4 flex flex-col gap-3'>
+                <div className='flex items-center justify-between font-heading text-sm'>
+                  <span className='text-muted-foreground'>Duração estimada</span>
+                  <span className='font-semibold text-foreground'>
+                    {durationInMinutes} min
+                  </span>
+                </div>
+                <div className='flex items-center justify-between font-heading text-sm'>
+                  <span className='text-muted-foreground'>Exercícios</span>
+                  <span className='font-semibold text-foreground'>
+                    {exercises.length}
+                  </span>
+                </div>
+                <div className='flex items-center justify-between font-heading text-sm'>
+                  <span className='text-muted-foreground'>Status</span>
+                  <span className='font-semibold text-foreground'>
+                    {hasCompletedSession
+                      ? 'Concluído'
+                      : hasInProgressSession
+                        ? 'Em andamento'
+                        : 'Não iniciado'}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -191,7 +193,7 @@ export default async function WorkoutDayPage({
           )}
 
           {hasInProgressSession && inProgressSession && (
-            <div className='hidden lg:block'>
+            <div className='hidden shrink-0 lg:block'>
               <CompleteWorkoutButton
                 workoutPlanId={workoutPlanId}
                 workoutDayId={dayId}
@@ -201,8 +203,8 @@ export default async function WorkoutDayPage({
           )}
         </aside>
 
-        <div className='flex flex-col gap-4'>
-          <div className='grid grid-cols-1 gap-3'>
+        <div className='flex min-h-0 flex-col gap-4 lg:h-full lg:overflow-hidden'>
+          <div className='grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-y-auto lg:pr-1 [-ms-overflow-style:none] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border'>
             {sortedExercises.map((exercise) => (
               <ExerciseCard key={exercise.id} exercise={exercise} />
             ))}
