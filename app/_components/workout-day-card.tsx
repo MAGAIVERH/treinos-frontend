@@ -3,15 +3,7 @@ import { Calendar, Timer, Dumbbell } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { GetHomeData200TodayWorkoutDayWeekDay } from '@/app/_lib/api/fetch-generated';
 
-const WEEKDAY_LABELS: Record<string, string> = {
-  Monday: 'SEGUNDA',
-  Tuesday: 'TERÇA',
-  Wednesday: 'QUARTA',
-  Thursday: 'QUINTA',
-  Friday: 'SEXTA',
-  Saturday: 'SÁBADO',
-  Sunday: 'DOMINGO',
-};
+import { WEEKDAY_LABELS } from '@/app/_lib/weekday-labels';
 
 interface WorkoutDayCardProps {
   name: string;
@@ -93,7 +85,7 @@ export function WorkoutDayCard({
           <div className='flex shrink-0 items-center gap-1'>
             <Dumbbell className='size-3.5 shrink-0 text-background/70' />
             <span className='font-heading text-xs text-background/70'>
-              {exercisesCount} exercícios
+              {exercisesCount} exercises
             </span>
           </div>
         </div>

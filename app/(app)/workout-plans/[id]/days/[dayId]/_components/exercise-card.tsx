@@ -18,7 +18,7 @@ export function ExerciseCard({ exercise }: ExerciseCardProps) {
   const handleHelp = () => {
     setChatParams({
       chat_open: true,
-      chat_initial_message: `Como executar o exercício ${exercise.name} corretamente?`,
+      chat_initial_message: `How do I perform ${exercise.name} correctly?`,
     });
   };
 
@@ -34,7 +34,7 @@ export function ExerciseCard({ exercise }: ExerciseCardProps) {
       </div>
       <div className='flex flex-wrap items-center gap-1.5'>
         <span className='rounded-full bg-muted px-2.5 py-1 font-heading text-xs font-semibold uppercase text-muted-foreground'>
-          {exercise.sets} séries
+          {exercise.sets} sets
         </span>
         <span className='rounded-full bg-muted px-2.5 py-1 font-heading text-xs font-semibold uppercase text-muted-foreground'>
           {exercise.reps} reps

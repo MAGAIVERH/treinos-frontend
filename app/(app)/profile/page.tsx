@@ -47,7 +47,7 @@ export default async function ProfilePage() {
       value: bodyFatPercentage != null ? `${bodyFatPercentage}%` : '-',
       label: 'Gc',
     },
-    { icon: User, value: age ?? '-', label: 'Anos' },
+    { icon: User, value: age ?? '-', label: 'Years' },
   ];
 
   return (
@@ -67,7 +67,7 @@ export default async function ProfilePage() {
               {user.name}
             </h1>
             <p className='font-heading text-sm leading-[1.15] text-foreground/70'>
-              Plano Premium Free
+              Premium Free Plan
             </p>
           </div>
         </div>

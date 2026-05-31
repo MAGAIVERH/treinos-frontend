@@ -30,20 +30,20 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'FIT.AI',
-  description: 'O app que vai transformar a forma como você treina.',
+  description: 'The app that transforms how you train.',
   icons: {
     icon: '/favicon.png', // ← .png
   },
   openGraph: {
-    title: 'FIT.AI — Treine com inteligência',
-    description: 'Planos de treino personalizados criados por IA.',
+    title: 'FIT.AI — Train smarter',
+    description: 'AI-powered personalized workout plans.',
     images: [{ url: '/opengraph-image1.png', width: 1200, height: 630 }], // ← .png
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FIT.AI — Treine com inteligência',
-    description: 'Planos de treino personalizados criados por IA.',
+    title: 'FIT.AI — Train smarter',
+    description: 'AI-powered personalized workout plans.',
     images: ['/opengraph-image1.png'], // ← .png
   },
 };

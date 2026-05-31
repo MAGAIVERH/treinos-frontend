@@ -34,7 +34,7 @@ export function LogoutButton({ className }: LogoutButtonProps) {
       )}
     >
       <span className='font-heading text-base font-semibold'>
-        Sair da conta
+        Sign out
       </span>
       <LogOut className='size-4' />
     </Button>

@@ -65,7 +65,7 @@ export default async function StatsPage() {
 
       <div className='flex flex-col gap-3 lg:gap-6'>
         <h2 className='font-heading text-lg font-semibold text-foreground'>
-          Consistência
+          Consistency
         </h2>
 
         <StatsHeatmap consistencyByDay={consistencyByDay} today={today} />
@@ -74,17 +74,17 @@ export default async function StatsPage() {
           <StatCard
             icon={CircleCheck}
             value={String(completedWorkoutsCount)}
-            label='Treinos Feitos'
+            label='Workouts Completed'
           />
           <StatCard
             icon={CirclePercent}
             value={`${Math.round(conclusionRate * 100)}%`}
-            label='Taxa de conclusão'
+            label='Completion Rate'
           />
           <StatCard
             icon={Hourglass}
             value={formatTotalTime(totalTimeInSeconds)}
-            label='Tempo Total'
+            label='Total Time'
           />
         </div>
       </div>

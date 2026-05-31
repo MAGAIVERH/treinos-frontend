@@ -25,10 +25,10 @@ export function StreakBanner({ workoutStreak }: StreakBannerProps) {
         </div>
         <div className='flex flex-col items-center gap-1'>
           <p className='font-heading text-5xl font-semibold leading-[0.95] text-background'>
-            {workoutStreak} dias
+            {workoutStreak} days
           </p>
           <p className='font-heading text-base leading-[1.15] text-background/60'>
-            Sequência Atual
+            Current Streak
           </p>
         </div>
       </div>

@@ -32,7 +32,7 @@ export const SignInWithGoogle = ({ className }: SignInWithGoogleProps) => {
         height={16}
         className='shrink-0'
       />
-      Fazer login com Google
+      Sign in with Google
     </Button>
   );
 };

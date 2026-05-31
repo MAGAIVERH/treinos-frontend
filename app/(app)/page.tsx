@@ -73,10 +73,10 @@ export default async function Home() {
         <div className='relative flex w-full min-w-0 items-end justify-between gap-3'>
           <div className='flex min-w-0 flex-1 flex-col gap-1.5'>
             <h1 className='truncate font-heading text-2xl font-semibold leading-[1.05] text-background lg:text-3xl'>
-              Olá, {userName}
+              Hi, {userName}
             </h1>
             <p className='font-heading text-sm leading-[1.15] text-background/70'>
-              Bora treinar hoje?
+              Ready to train today?
             </p>
           </div>
           {todayWorkoutHref ? (
@@ -85,13 +85,13 @@ export default async function Home() {
               className='shrink-0 rounded-full bg-primary px-4 py-2'
             >
               <span className='font-heading text-sm font-semibold text-primary-foreground'>
-                Bora!
+                Let&apos;s go!
               </span>
             </Link>
           ) : (
             <div className='shrink-0 rounded-full bg-primary px-4 py-2'>
               <span className='font-heading text-sm font-semibold text-primary-foreground'>
-                Bora!
+                Let&apos;s go!
               </span>
             </div>
           )}
@@ -101,13 +101,13 @@ export default async function Home() {
       <div className='flex min-w-0 max-w-full shrink-0 flex-col gap-2'>
         <div className='flex min-w-0 items-center justify-between gap-3'>
           <h2 className='font-heading text-base font-semibold text-foreground'>
-            Consistência
+            Consistency
           </h2>
           <Link
             href='/stats'
             className='shrink-0 font-heading text-xs text-primary'
           >
-            Ver histórico
+            View history
           </Link>
         </div>
 
@@ -131,13 +131,13 @@ export default async function Home() {
         <div className='flex min-w-0 max-w-full shrink-0 flex-col gap-2'>
           <div className='flex min-w-0 items-center justify-between gap-3'>
             <h2 className='font-heading text-base font-semibold text-foreground'>
-              Treino de Hoje
+              Today&apos;s Workout
             </h2>
             <Link
               href={`/workout-plans/${activeWorkoutPlanId}`}
               className='shrink-0 font-heading text-xs text-primary'
             >
-              Ver treinos
+              View workouts
             </Link>
           </div>
 

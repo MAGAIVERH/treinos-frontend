@@ -81,7 +81,7 @@ export default async function WorkoutPlanPage({
               {name}
             </Badge>
             <h1 className='font-heading text-2xl font-semibold leading-[1.05] text-background lg:text-3xl'>
-              Plano de Treino
+              Workout Plan
             </h1>
           </div>
         </div>

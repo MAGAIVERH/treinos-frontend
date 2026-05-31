@@ -66,7 +66,7 @@ export default async function WorkoutDayPage({
 
   const pageTitle =
     hasInProgressSession || hasCompletedSession
-      ? 'Treino de Hoje'
+      ? "Today's Workout"
       : WEEKDAY_TITLE_LABELS[weekDay];
 
   return (
@@ -116,7 +116,7 @@ export default async function WorkoutDayPage({
                   <div className='flex items-center gap-1'>
                     <Dumbbell className='size-3.5 text-background/70' />
                     <span className='font-heading text-xs text-background/70'>
-                      {exercises.length} exercícios
+                      {exercises.length} exercises
                     </span>
                   </div>
                 </div>
@@ -136,7 +136,7 @@ export default async function WorkoutDayPage({
                   disabled
                   className='hidden rounded-full px-4 py-2 font-heading text-sm font-semibold text-background/70 hover:bg-transparent hover:text-background/70 lg:inline-flex'
                 >
-                  Concluído!
+                  Done!
                 </Button>
               )}
             </div>
@@ -145,17 +145,17 @@ export default async function WorkoutDayPage({
           <div className='hidden min-h-0 flex-1 flex-col rounded-xl border border-border bg-primary/8 p-5 lg:flex lg:justify-between'>
             <div>
               <h3 className='font-heading text-sm font-semibold text-foreground'>
-                Resumo da sessão
+                Session summary
               </h3>
               <div className='mt-4 flex flex-col gap-3'>
                 <div className='flex items-center justify-between font-heading text-sm'>
-                  <span className='text-muted-foreground'>Duração estimada</span>
+                  <span className='text-muted-foreground'>Estimated duration</span>
                   <span className='font-semibold text-foreground'>
                     {durationInMinutes} min
                   </span>
                 </div>
                 <div className='flex items-center justify-between font-heading text-sm'>
-                  <span className='text-muted-foreground'>Exercícios</span>
+                  <span className='text-muted-foreground'>Exercises</span>
                   <span className='font-semibold text-foreground'>
                     {exercises.length}
                   </span>
@@ -164,10 +164,10 @@ export default async function WorkoutDayPage({
                   <span className='text-muted-foreground'>Status</span>
                   <span className='font-semibold text-foreground'>
                     {hasCompletedSession
-                      ? 'Concluído'
+                      ? 'Completed'
                       : hasInProgressSession
-                        ? 'Em andamento'
-                        : 'Não iniciado'}
+                        ? 'In progress'
+                        : 'Not started'}
                   </span>
                 </div>
               </div>
@@ -188,7 +188,7 @@ export default async function WorkoutDayPage({
               disabled
               className='rounded-full px-4 py-2 font-heading text-sm font-semibold text-muted-foreground lg:hidden'
             >
-              Concluído!
+              Done!
             </Button>
           )}
 

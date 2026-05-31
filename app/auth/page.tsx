@@ -42,10 +42,10 @@ export default async function AuthPage() {
 
           <div className='mt-auto hidden max-w-lg lg:block'>
             <p className='font-heading text-[11px] font-semibold uppercase tracking-[0.24em] text-white/60'>
-              Personal trainer com IA
+              AI personal trainer
             </p>
             <h2 className='mt-3 font-heading text-[2.125rem] font-semibold leading-[1.12] text-white xl:text-[2.5rem] xl:leading-[1.1]'>
-              Treinos feitos para o seu corpo, não para a massa.
+              Workouts built for your body, not the crowd.
             </h2>
           </div>
         </div>
@@ -57,16 +57,16 @@ export default async function AuthPage() {
         <div className='flex h-full flex-col justify-between gap-6 px-5 py-8 pb-safe lg:hidden'>
           <div className='flex flex-1 flex-col items-center justify-center text-center'>
             <p className='font-heading text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-foreground/80'>
-              Entrar na plataforma
+              Sign in to the platform
             </p>
 
             <h1 className='mt-3 font-heading text-[1.875rem] font-semibold leading-[1.15] text-primary-foreground'>
-              Transforme a forma como você treina.
+              Transform the way you train.
             </h1>
 
             <p className='mt-4 max-w-[34ch] font-heading text-[15px] leading-[1.65] text-primary-foreground/75'>
-              Use sua conta Google para acessar planos personalizados criados
-              pela nossa IA.
+              Use your Google account to access personalized plans created by
+              our AI.
             </p>
 
             <div className='mt-8 w-full max-w-sm'>
@@ -75,7 +75,7 @@ export default async function AuthPage() {
           </div>
 
           <p className='text-center font-heading text-xs leading-[1.4] text-primary-foreground/70'>
-            ©2026 Copyright FIT.AI. Todos os direitos reservados
+            ©2026 Copyright FIT.AI. All rights reserved
           </p>
         </div>
 
@@ -84,16 +84,16 @@ export default async function AuthPage() {
           <div className='flex flex-1 flex-col items-center justify-center text-center'>
             <div className='w-full max-w-[22rem] xl:max-w-[24rem]'>
               <p className='font-heading text-[11px] font-semibold uppercase tracking-[0.2em] text-primary'>
-                Entrar na plataforma
+                Sign in to the platform
               </p>
 
               <h1 className='mt-3 font-heading text-[1.875rem] font-semibold leading-[1.15] text-foreground xl:text-[2rem]'>
-                Transforme a forma como você treina.
+                Transform the way you train.
               </h1>
 
               <p className='mx-auto mt-4 max-w-[34ch] font-heading text-[15px] leading-[1.65] text-muted-foreground'>
-                Use sua conta Google para acessar planos personalizados criados
-                pela nossa IA.
+                Use your Google account to access personalized plans created by
+                our AI.
               </p>
 
               <div className='mt-10 flex justify-center'>
@@ -103,7 +103,7 @@ export default async function AuthPage() {
           </div>
 
           <p className='text-center font-heading text-[11px] leading-[1.4] text-muted-foreground/80'>
-            ©2026 Copyright FIT.AI. Todos os direitos reservados
+            ©2026 Copyright FIT.AI. All rights reserved
           </p>
         </div>
       </div>

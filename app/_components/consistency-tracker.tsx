@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import type { GetHomeData200ConsistencyByDay } from '@/app/_lib/api/fetch-generated';
 import { ConsistencySquare } from './consistency-square';
 
-const WEEKDAY_SHORT = ['S', 'T', 'Q', 'Q', 'S', 'S', 'D'];
+const WEEKDAY_SHORT = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
 function getWeekDates(today: dayjs.Dayjs) {
   const monday =

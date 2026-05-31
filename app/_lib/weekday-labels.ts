@@ -9,33 +9,33 @@ export const WEEKDAY_ORDER = [
 ] as const;
 
 export const WEEKDAY_LABELS: Record<string, string> = {
-  Monday: 'SEGUNDA',
-  Tuesday: 'TERÇA',
-  Wednesday: 'QUARTA',
-  Thursday: 'QUINTA',
-  Friday: 'SEXTA',
-  Saturday: 'SÁBADO',
-  Sunday: 'DOMINGO',
+  Monday: 'MONDAY',
+  Tuesday: 'TUESDAY',
+  Wednesday: 'WEDNESDAY',
+  Thursday: 'THURSDAY',
+  Friday: 'FRIDAY',
+  Saturday: 'SATURDAY',
+  Sunday: 'SUNDAY',
 };
 
 export const WEEKDAY_TITLE_LABELS: Record<string, string> = {
-  Monday: 'Segunda',
-  Tuesday: 'Terça',
-  Wednesday: 'Quarta',
-  Thursday: 'Quinta',
-  Friday: 'Sexta',
-  Saturday: 'Sábado',
-  Sunday: 'Domingo',
+  Monday: 'Monday',
+  Tuesday: 'Tuesday',
+  Wednesday: 'Wednesday',
+  Thursday: 'Thursday',
+  Friday: 'Friday',
+  Saturday: 'Saturday',
+  Sunday: 'Sunday',
 };
 
 export const WEEKDAY_SHORT: Record<string, string> = {
-  Monday: 'SEG',
-  Tuesday: 'TER',
-  Wednesday: 'QUA',
-  Thursday: 'QUI',
-  Friday: 'SEX',
-  Saturday: 'SÁB',
-  Sunday: 'DOM',
+  Monday: 'MON',
+  Tuesday: 'TUE',
+  Wednesday: 'WED',
+  Thursday: 'THU',
+  Friday: 'FRI',
+  Saturday: 'SAT',
+  Sunday: 'SUN',
 };
 
 export function formatRestDayNames(weekDays: string[]): string {

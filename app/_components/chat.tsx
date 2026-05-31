@@ -49,7 +49,7 @@ function ChatResponsiveShell({ onClose, children }: ChatResponsiveShellProps) {
     <>
       <button
         type='button'
-        aria-label='Fechar chat'
+        aria-label='Close chat'
         className='fixed inset-0 z-60 bg-foreground/30 lg:hidden'
         onClick={onClose}
       />
@@ -94,7 +94,7 @@ function ChatHeader({
       </div>
       {embedded && showAccessLink ? (
         <Button variant='ghost' size='sm' asChild>
-          <Link href='/'>Acessar FIT.AI</Link>
+          <Link href='/'>Open FIT.AI</Link>
         </Button>
       ) : !embedded ? (
         <Button variant='ghost' size='icon' onClick={onClose}>
@@ -136,7 +136,7 @@ function ChatErrorState({
         </p>
         {onRetry ? (
           <Button type='button' variant='outline' onClick={onRetry}>
-            Tentar novamente
+            Try again
           </Button>
         ) : null}
       </div>
@@ -283,7 +283,7 @@ function ChatContent({
           <div className='px-5 pt-5'>
             <div className='rounded-xl border border-destructive/20 bg-destructive/5 p-4'>
               <p className='font-heading text-sm text-destructive'>
-                Não foi possível enviar sua mensagem. Tente novamente.
+                Could not send your message. Please try again.
               </p>
             </div>
           </div>
@@ -365,7 +365,7 @@ function ChatContent({
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder='Digite sua mensagem'
+                      placeholder='Type your message'
                       className='rounded-full border-border bg-secondary px-4 py-3 font-heading text-sm text-foreground placeholder:text-muted-foreground'
                     />
                   </FormControl>
@@ -428,14 +428,14 @@ export function Chat({
       embedded={embedded}
       showAccessLink={showAccessLink}
       onClose={handleClose}
-      message='Sua sessão expirou. Faça login novamente para usar o Coach AI.'
+      message='Your session expired. Sign in again to use Coach AI.'
     />
   ) : historyError ? (
     <ChatErrorState
       embedded={embedded}
       showAccessLink={showAccessLink}
       onClose={handleClose}
-      message='Não foi possível carregar o chat. Tente novamente.'
+      message='Could not load the chat. Please try again.'
       onRetry={() => window.location.reload()}
     />
   ) : (

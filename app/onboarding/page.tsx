@@ -40,7 +40,7 @@ export default async function OnboardingPage() {
     <Chat
       embedded
       initialMessage={
-        hasHistory ? undefined : 'Quero começar a melhorar minha saúde!'
+        hasHistory ? undefined : 'I want to start improving my health!'
       }
     />
   );

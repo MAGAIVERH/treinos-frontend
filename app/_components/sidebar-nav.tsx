@@ -18,9 +18,9 @@ interface SidebarNavProps {
 
 const NAV_LINKS = [
   { page: 'home' as const, href: '/', label: 'Home', icon: House },
-  { page: 'calendar' as const, label: 'Calendário', icon: Calendar },
+  { page: 'calendar' as const, label: 'Calendar', icon: Calendar },
   { page: 'stats' as const, href: '/stats', label: 'Stats', icon: ChartNoAxesColumn },
-  { page: 'profile' as const, href: '/profile', label: 'Perfil', icon: UserRound },
+  { page: 'profile' as const, href: '/profile', label: 'Profile', icon: UserRound },
 ];
 
 export function SidebarNav({ calendarHref }: SidebarNavProps) {

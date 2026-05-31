@@ -47,17 +47,17 @@ function buildMonthGroups(today: dayjs.Dayjs): MonthGroup[] {
   const monthGroups: MonthGroup[] = [];
   const monthLabels = [
     'Jan',
-    'Fev',
+    'Feb',
     'Mar',
-    'Abr',
-    'Mai',
+    'Apr',
+    'May',
     'Jun',
     'Jul',
-    'Ago',
-    'Set',
-    'Out',
+    'Aug',
+    'Sep',
+    'Oct',
     'Nov',
-    'Dez',
+    'Dec',
   ];
 
   for (const week of allWeeks) {
@@ -137,7 +137,7 @@ export function StatsHeatmap({ consistencyByDay, today }: StatsHeatmapProps) {
       </div>
 
       <p className='mt-2 text-center font-heading text-xs text-muted-foreground lg:hidden'>
-        Deslize para ver o histórico
+        Swipe to see history
       </p>
     </div>
   );

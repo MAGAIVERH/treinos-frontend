@@ -29,7 +29,7 @@ export function RestDayCard({ weekDays }: RestDayCardProps) {
       <div className='flex items-center gap-2'>
         <Zap className='size-5 shrink-0 text-foreground lg:size-4' />
         <span className='font-heading text-2xl font-semibold leading-[1.05] text-foreground lg:text-lg'>
-          Descanso
+          Rest
         </span>
       </div>
     </div>

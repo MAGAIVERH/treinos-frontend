@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 
-const SUGGESTIONS_WITHOUT_PLAN = ['Monte meu plano de treino'];
+const SUGGESTIONS_WITHOUT_PLAN = ['Build my workout plan'];
 const SUGGESTIONS_WITH_PLAN = [
-  'Ajustar treino de hoje',
-  'Monte meu plano de treino',
+  "Adjust today's workout",
+  'Build my workout plan',
 ];
 
 type HomeDataResponse = {

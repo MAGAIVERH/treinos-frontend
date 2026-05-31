@@ -30,7 +30,7 @@ export function CompleteWorkoutButton({
       disabled={isPending}
       className='w-full rounded-full py-3 font-heading text-sm font-semibold'
     >
-      Marcar como concluído
+      Mark as completed
     </Button>
   );
 }
