@@ -76,61 +76,89 @@ function buildMonthGroups(today: dayjs.Dayjs): MonthGroup[] {
   return monthGroups;
 }
 
+function HeatmapCell({
+  date,
+  dayData,
+  startOfRange,
+  today,
+}: {
+  date: dayjs.Dayjs;
+  dayData: GetStats200ConsistencyByDay[string] | undefined;
+  startOfRange: dayjs.Dayjs;
+  today: dayjs.Dayjs;
+}) {
+  const isInRange =
+    !date.isBefore(startOfRange, 'day') && !date.isAfter(today, 'day');
+
+  if (!isInRange) {
+    return (
+      <div
+        className='size-[11px] shrink-0 rounded-[2px] bg-background lg:size-3'
+        aria-hidden='true'
+      />
+    );
+  }
+
+  if (dayData?.workoutDayCompleted) {
+    return (
+      <div className='size-[11px] shrink-0 rounded-[2px] bg-primary lg:size-3' />
+    );
+  }
+
+  if (dayData?.workoutDayStarted) {
+    return (
+      <div className='size-[11px] shrink-0 rounded-[2px] bg-primary/30 lg:size-3' />
+    );
+  }
+
+  return (
+    <div className='size-[11px] shrink-0 rounded-[2px] bg-background lg:size-3' />
+  );
+}
+
 export function StatsHeatmap({ consistencyByDay, today }: StatsHeatmapProps) {
   const monthGroups = buildMonthGroups(today);
+  const startOfRange = today.subtract(2, 'month').startOf('month');
 
   return (
     <div className='relative w-full lg:mx-auto lg:max-w-3xl'>
-      <div className='flex gap-1 overflow-x-auto rounded-xl border border-border p-5 [-ms-overflow-style:none] [scrollbar-width:none] lg:justify-between lg:overflow-visible [&::-webkit-scrollbar]:hidden'>
-        {monthGroups.map((group) => (
-          <div key={group.label} className='flex shrink-0 flex-col gap-1.5'>
-            <p className='font-heading text-xs text-muted-foreground'>
-              {group.label}
-            </p>
-            <div className='flex gap-1'>
-              {group.weeks.map((week) => {
-                const weekKey = week.dates[0].format('YYYY-MM-DD');
-                return (
-                  <div key={weekKey} className='flex flex-col gap-1'>
-                    {week.dates.map((date) => {
-                      const dateStr = date.format('YYYY-MM-DD');
-                      const dayData = consistencyByDay[dateStr];
+      <div className='overflow-x-auto rounded-xl border border-border p-3 [-ms-overflow-style:none] [scrollbar-width:none] lg:p-4 [&::-webkit-scrollbar]:hidden'>
+        <div className='flex w-max min-w-full gap-[3px] lg:w-full lg:justify-between'>
+          {monthGroups.map((group) => (
+            <div key={group.label} className='flex shrink-0 flex-col gap-[3px]'>
+              <p className='mb-0.5 font-heading text-[10px] text-muted-foreground lg:text-xs'>
+                {group.label}
+              </p>
+              <div className='flex gap-[3px]'>
+                {group.weeks.map((week) => {
+                  const weekKey = week.dates[0].format('YYYY-MM-DD');
+                  return (
+                    <div key={weekKey} className='flex flex-col gap-[3px]'>
+                      {week.dates.map((date) => {
+                        const dateStr = date.format('YYYY-MM-DD');
+                        const dayData = consistencyByDay[dateStr];
 
-                      if (dayData?.workoutDayCompleted) {
                         return (
-                          <div
+                          <HeatmapCell
                             key={dateStr}
-                            className='size-5 rounded-md bg-primary'
+                            date={date}
+                            dayData={dayData}
+                            startOfRange={startOfRange}
+                            today={today}
                           />
                         );
-                      }
-
-                      if (dayData?.workoutDayStarted) {
-                        return (
-                          <div
-                            key={dateStr}
-                            className='size-5 rounded-md bg-primary/20'
-                          />
-                        );
-                      }
-
-                      return (
-                        <div
-                          key={dateStr}
-                          className='size-5 rounded-md border border-border'
-                        />
-                      );
-                    })}
-                  </div>
-                );
-              })}
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       <div
-        className='pointer-events-none absolute inset-y-0 right-0 flex w-12 items-center justify-end rounded-r-xl bg-linear-to-l from-background via-background/90 to-transparent pr-1 lg:hidden'
+        className='pointer-events-none absolute inset-y-0 right-0 flex w-10 items-center justify-end rounded-r-xl bg-linear-to-l from-background via-background/90 to-transparent pr-0.5 lg:hidden'
         aria-hidden='true'
       >
         <ChevronRight className='size-4 text-muted-foreground/60' />
