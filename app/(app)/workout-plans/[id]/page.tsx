@@ -18,6 +18,7 @@ import {
   groupWorkoutPlanDays,
 } from '@/app/_lib/group-workout-plan-days';
 import { cn } from '@/lib/utils';
+import { translateWorkoutLabel } from '@/app/_lib/translate-workout-label';
 
 export default async function WorkoutPlanPage({
   params,
@@ -78,7 +79,7 @@ export default async function WorkoutPlanPage({
           <div className='flex flex-col gap-3'>
             <Badge className='gap-1 rounded-full px-2.5 py-1.5 font-heading text-xs font-semibold uppercase'>
               <Goal className='size-4' />
-              {name}
+              {translateWorkoutLabel(name)}
             </Badge>
             <h1 className='font-heading text-2xl font-semibold leading-[1.05] text-background lg:text-3xl'>
               Workout Plan

@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import type { GetHomeData200TodayWorkoutDayWeekDay } from '@/app/_lib/api/fetch-generated';
 
 import { WEEKDAY_LABELS } from '@/app/_lib/weekday-labels';
+import { translateWorkoutLabel } from '@/app/_lib/translate-workout-label';
 
 interface WorkoutDayCardProps {
   name: string;
@@ -39,7 +40,7 @@ export function WorkoutDayCard({
       {coverImageUrl && (
         <Image
           src={coverImageUrl}
-          alt={name}
+          alt={translateWorkoutLabel(name)}
           fill
           className='pointer-events-none object-cover'
         />
@@ -68,7 +69,7 @@ export function WorkoutDayCard({
             !isCompact && !isPlan && 'text-2xl leading-[1.05]',
           )}
         >
-          {name}
+          {translateWorkoutLabel(name)}
         </h3>
         <div
           className={cn(

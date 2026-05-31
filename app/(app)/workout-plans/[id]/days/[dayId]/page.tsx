@@ -19,6 +19,7 @@ import {
   WEEKDAY_LABELS,
   WEEKDAY_TITLE_LABELS,
 } from '@/app/_lib/weekday-labels';
+import { translateWorkoutLabel } from '@/app/_lib/translate-workout-label';
 
 export default async function WorkoutDayPage({
   params,
@@ -85,7 +86,7 @@ export default async function WorkoutDayPage({
             {coverImageUrl && (
               <Image
                 src={coverImageUrl}
-                alt={name}
+                alt={displayName}
                 fill
                 className='pointer-events-none object-cover'
               />
@@ -104,7 +105,7 @@ export default async function WorkoutDayPage({
             <div className='relative flex w-full items-end justify-between gap-3'>
               <div className='flex flex-col gap-2'>
                 <h2 className='font-heading text-2xl font-semibold leading-[1.05] text-background'>
-                  {name}
+                  {displayName}
                 </h2>
                 <div className='flex flex-wrap items-start gap-2'>
                   <div className='flex items-center gap-1'>
