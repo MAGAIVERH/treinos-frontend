@@ -70,7 +70,7 @@ export default async function WorkoutDayPage({
       : WEEKDAY_TITLE_LABELS[weekDay];
 
   return (
-    <div className='flex min-h-0 flex-1 flex-col gap-4 lg:h-full lg:min-h-0 lg:overflow-hidden lg:gap-6'>
+    <div className='flex min-h-0 flex-1 flex-col gap-4 pt-2 lg:h-full lg:min-h-0 lg:overflow-hidden lg:gap-6 lg:pt-5'>
       <div className='flex shrink-0 items-center justify-between'>
         <BackButton />
         <h1 className='font-heading text-lg font-semibold text-foreground'>
@@ -204,7 +204,7 @@ export default async function WorkoutDayPage({
         </aside>
 
         <div className='flex min-h-0 flex-col gap-4 lg:h-full lg:overflow-hidden'>
-          <div className='grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-y-auto lg:pr-1 [-ms-overflow-style:none] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border'>
+          <div className='grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-y-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'>
             {sortedExercises.map((exercise) => (
               <ExerciseCard key={exercise.id} exercise={exercise} />
             ))}
