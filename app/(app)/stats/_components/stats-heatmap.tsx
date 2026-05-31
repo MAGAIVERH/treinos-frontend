@@ -104,16 +104,16 @@ function HeatmapCell({
     !date.isAfter(yearEnd, 'day') &&
     !date.isAfter(today, 'day');
 
-  if (!isTrackableDay) {
-    return <div className={`${CELL} ${CELL_EMPTY}`} aria-hidden='true' />;
-  }
-
   if (dayData?.workoutDayCompleted) {
     return <div className={`${CELL} bg-primary`} />;
   }
 
   if (dayData?.workoutDayStarted) {
     return <div className={`${CELL} bg-primary/60`} />;
+  }
+
+  if (!isTrackableDay) {
+    return <div className={`${CELL} ${CELL_EMPTY}`} aria-hidden='true' />;
   }
 
   return <div className={`${CELL} ${CELL_EMPTY}`} />;

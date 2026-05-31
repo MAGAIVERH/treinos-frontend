@@ -23,7 +23,6 @@ export function ConsistencyTracker({
   today,
 }: ConsistencyTrackerProps) {
   const weekDates = getWeekDates(today);
-  const todayStr = today.format('YYYY-MM-DD');
 
   return (
     <div className='flex w-full items-center justify-between'>
@@ -35,7 +34,7 @@ export function ConsistencyTracker({
             <ConsistencySquare
               completed={dayData?.workoutDayCompleted ?? false}
               started={dayData?.workoutDayStarted ?? false}
-              isToday={dateStr === todayStr}
+              isToday={false}
             />
             <span className='font-heading text-xs text-muted-foreground'>
               {WEEKDAY_SHORT[index]}
