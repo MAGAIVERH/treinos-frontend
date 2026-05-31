@@ -17,9 +17,9 @@
   <rect x="80" y="80" width="6" height="470" rx="3" fill="url(#accentGrad)"/>
   <text x="120" y="200" font-family="sans-serif" font-size="96" font-weight="900" fill="white" letter-spacing="6">FIT.AI</text>
   <rect x="120" y="230" width="420" height="4" rx="2" fill="url(#accentGrad)"/>
-  <text x="122" y="310" font-family="sans-serif" font-size="42" font-weight="400" fill="white" opacity="0.9">Transforme a forma</text>
-  <text x="122" y="365" font-family="sans-serif" font-size="42" font-weight="400" fill="white" opacity="0.9">como você treina.</text>
-  <text x="122" y="440" font-family="sans-serif" font-size="26" font-weight="400" fill="#748FFC">Planos personalizados com IA</text>
+  <text x="122" y="310" font-family="sans-serif" font-size="42" font-weight="400" fill="white" opacity="0.9">Transform the way</text>
+  <text x="122" y="365" font-family="sans-serif" font-size="42" font-weight="400" fill="white" opacity="0.9">you train.</text>
+  <text x="122" y="440" font-family="sans-serif" font-size="26" font-weight="400" fill="#748FFC">Personalized workout plans with AI</text>
   <rect x="122" y="490" width="220" height="56" rx="28" fill="url(#accentGrad)"/>
-  <text x="232" y="524" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="700" fill="white">Começar grátis</text>
+  <text x="232" y="524" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="700" fill="white">Get started free</text>
 </svg>

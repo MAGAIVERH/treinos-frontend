@@ -29,22 +29,26 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://treinos-frontend-gold.vercel.app'),
   title: 'FIT.AI',
   description: 'The app that transforms how you train.',
   icons: {
-    icon: '/favicon.png', // ← .png
+    icon: '/favicon.png',
   },
   openGraph: {
-    title: 'FIT.AI — Train smarter',
-    description: 'AI-powered personalized workout plans.',
-    images: [{ url: '/opengraph-image1.png', width: 1200, height: 630 }], // ← .png
+    title: 'FIT.AI, Train smarter',
+    description: 'AI powered personalized workout plans built for your body.',
+    url: 'https://treinos-frontend-gold.vercel.app',
+    siteName: 'FIT.AI',
+    locale: 'en_US',
+    images: [{ url: '/opengraph-image.svg', width: 1200, height: 630, alt: 'FIT.AI, AI personal trainer' }],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FIT.AI — Train smarter',
-    description: 'AI-powered personalized workout plans.',
-    images: ['/opengraph-image1.png'], // ← .png
+    title: 'FIT.AI, Train smarter',
+    description: 'AI powered personalized workout plans built for your body.',
+    images: ['/opengraph-image.svg'],
   },
 };
 
