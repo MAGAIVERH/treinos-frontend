@@ -64,6 +64,7 @@ export default async function WorkoutDayPage({
   const completedSession = sessions.find((s) => s.completedAt);
   const hasInProgressSession = !!inProgressSession;
   const hasCompletedSession = !!completedSession;
+  const displayName = translateWorkoutLabel(name);
 
   const pageTitle =
     hasInProgressSession || hasCompletedSession
