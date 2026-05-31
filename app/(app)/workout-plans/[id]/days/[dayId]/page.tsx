@@ -79,26 +79,8 @@ export default async function WorkoutDayPage({
         <div className='size-6' aria-hidden='true' />
       </div>
 
-      <div className='flex min-h-0 flex-1 flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-6'>
-        <div className='order-2 flex flex-col gap-4 lg:order-1'>
-          <div className='grid grid-cols-1 gap-3 lg:grid-cols-2'>
-            {sortedExercises.map((exercise) => (
-              <ExerciseCard key={exercise.id} exercise={exercise} />
-            ))}
-          </div>
-
-          {hasInProgressSession && inProgressSession && (
-            <div className='lg:hidden'>
-              <CompleteWorkoutButton
-                workoutPlanId={workoutPlanId}
-                workoutDayId={dayId}
-                sessionId={inProgressSession.id}
-              />
-            </div>
-          )}
-        </div>
-
-        <aside className='order-1 flex flex-col gap-4 lg:sticky lg:top-6 lg:order-2'>
+      <div className='flex min-h-0 flex-1 flex-col gap-4 lg:grid lg:grid-cols-[minmax(280px,340px)_minmax(0,1fr)] lg:items-start lg:gap-6'>
+        <aside className='flex flex-col gap-4 lg:sticky lg:top-6'>
           <div className='relative flex h-50 w-full flex-col items-start justify-between overflow-hidden rounded-xl p-5 lg:h-64'>
             {coverImageUrl && (
               <Image
@@ -218,6 +200,24 @@ export default async function WorkoutDayPage({
             </div>
           )}
         </aside>
+
+        <div className='flex flex-col gap-4'>
+          <div className='grid grid-cols-1 gap-3'>
+            {sortedExercises.map((exercise) => (
+              <ExerciseCard key={exercise.id} exercise={exercise} />
+            ))}
+          </div>
+
+          {hasInProgressSession && inProgressSession && (
+            <div className='lg:hidden'>
+              <CompleteWorkoutButton
+                workoutPlanId={workoutPlanId}
+                workoutDayId={dayId}
+                sessionId={inProgressSession.id}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
