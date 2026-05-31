@@ -6,7 +6,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Flame } from 'lucide-react';
 import { ConsistencyTracker } from '../_components/consistency-tracker';
-import { WorkoutDayCard } from '../_components/workout-day-card';
+import {
+  TodayWorkoutCard,
+  TodayWorkoutCta,
+} from '../_components/today-workout-card';
 import { getHomeData, getUserTrainData } from '../_lib/api/fetch-generated';
 import { getServerToday } from '../_lib/server-timezone';
 
@@ -43,9 +46,6 @@ export default async function Home() {
   const { todayWorkoutDay, workoutStreak, consistencyByDay, activeWorkoutPlanId } =
     homeData.data;
   const userName = session.data.user.name?.split(' ')[0] ?? '';
-  const todayWorkoutHref = todayWorkoutDay
-    ? `/workout-plans/${todayWorkoutDay.workoutPlanId}/days/${todayWorkoutDay.id}`
-    : null;
 
   return (
     <div className='mx-auto flex w-full min-w-0 max-w-3xl shrink-0 flex-col gap-2 lg:h-full lg:min-h-0 lg:overflow-hidden lg:gap-3 lg:pt-5'>
@@ -80,22 +80,7 @@ export default async function Home() {
               Ready to train today?
             </p>
           </div>
-          {todayWorkoutHref ? (
-            <Link
-              href={todayWorkoutHref}
-              className='shrink-0 rounded-full bg-primary px-4 py-2'
-            >
-              <span className='font-heading text-sm font-semibold text-primary-foreground'>
-                Let&apos;s go!
-              </span>
-            </Link>
-          ) : (
-            <div className='shrink-0 rounded-full bg-primary px-4 py-2'>
-              <span className='font-heading text-sm font-semibold text-primary-foreground'>
-                Let&apos;s go!
-              </span>
-            </div>
-          )}
+          <TodayWorkoutCta workoutDay={todayWorkoutDay} />
         </div>
       </div>
 
@@ -142,21 +127,7 @@ export default async function Home() {
             </Link>
           </div>
 
-          <Link
-            href={`/workout-plans/${todayWorkoutDay.workoutPlanId}/days/${todayWorkoutDay.id}`}
-            className='block w-full min-w-0 max-w-full'
-          >
-            <WorkoutDayCard
-              variant='compact'
-              name={todayWorkoutDay.name}
-              weekDay={todayWorkoutDay.weekDay}
-              estimatedDurationInSeconds={
-                todayWorkoutDay.estimatedDurationInSeconds
-              }
-              exercisesCount={todayWorkoutDay.exercisesCount}
-              coverImageUrl={todayWorkoutDay.coverImageUrl}
-            />
-          </Link>
+          <TodayWorkoutCard workoutDay={todayWorkoutDay} />
         </div>
       )}
     </div>

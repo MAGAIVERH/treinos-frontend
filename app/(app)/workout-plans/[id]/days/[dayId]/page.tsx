@@ -56,6 +56,7 @@ export default async function WorkoutDayPage({
     exercises,
     sessions,
     coverImageUrl,
+    isRest,
   } = workoutDayData.data;
 
   const durationInMinutes = Math.round(estimatedDurationInSeconds / 60);
@@ -68,9 +69,35 @@ export default async function WorkoutDayPage({
   const displayName = translateWorkoutLabel(name);
 
   const pageTitle =
-    hasInProgressSession || hasCompletedSession
-      ? "Today's Workout"
-      : WEEKDAY_TITLE_LABELS[weekDay];
+    isRest
+      ? 'Rest day'
+      : hasInProgressSession || hasCompletedSession
+        ? "Today's Workout"
+        : WEEKDAY_TITLE_LABELS[weekDay];
+
+  if (isRest) {
+    return (
+      <div className='flex min-h-0 flex-1 flex-col gap-4 pt-2 lg:h-full lg:min-h-0 lg:overflow-hidden lg:gap-6 lg:pt-5'>
+        <div className='flex shrink-0 items-center justify-between'>
+          <BackButton />
+          <h1 className='font-heading text-lg font-semibold text-foreground'>
+            {pageTitle}
+          </h1>
+          <div className='size-6' aria-hidden='true' />
+        </div>
+
+        <div className='flex flex-1 flex-col items-center justify-center gap-4 rounded-xl border border-border bg-primary/8 px-6 py-10 text-center'>
+          <p className='font-heading text-xl font-semibold text-foreground'>
+            {displayName}
+          </p>
+          <p className='max-w-sm font-heading text-sm leading-relaxed text-muted-foreground'>
+            This is a rest day in your plan. Recover well — your next workout
+            will be ready when you are.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='flex min-h-0 flex-1 flex-col gap-4 pt-2 lg:h-full lg:min-h-0 lg:overflow-hidden lg:gap-6 lg:pt-5'>
