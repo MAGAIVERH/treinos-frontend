@@ -76,6 +76,8 @@ function buildMonthGroups(today: dayjs.Dayjs): MonthGroup[] {
   return monthGroups;
 }
 
+const HEATMAP_CELL = 'size-3 shrink-0 rounded-[2px] lg:size-3.5';
+
 function HeatmapCell({
   date,
   dayData,
@@ -92,27 +94,22 @@ function HeatmapCell({
 
   if (!isInRange) {
     return (
-      <div
-        className='size-[11px] shrink-0 rounded-[2px] bg-background lg:size-3'
-        aria-hidden='true'
-      />
+      <div className={`${HEATMAP_CELL} bg-muted/40`} aria-hidden='true' />
     );
   }
 
   if (dayData?.workoutDayCompleted) {
-    return (
-      <div className='size-[11px] shrink-0 rounded-[2px] bg-primary lg:size-3' />
-    );
+    return <div className={`${HEATMAP_CELL} bg-primary`} />;
   }
 
   if (dayData?.workoutDayStarted) {
-    return (
-      <div className='size-[11px] shrink-0 rounded-[2px] bg-primary/30 lg:size-3' />
-    );
+    return <div className={`${HEATMAP_CELL} bg-primary/35`} />;
   }
 
   return (
-    <div className='size-[11px] shrink-0 rounded-[2px] bg-background lg:size-3' />
+    <div
+      className={`${HEATMAP_CELL} bg-background shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]`}
+    />
   );
 }
 
@@ -122,10 +119,13 @@ export function StatsHeatmap({ consistencyByDay, today }: StatsHeatmapProps) {
 
   return (
     <div className='relative w-full lg:mx-auto lg:max-w-3xl'>
-      <div className='overflow-x-auto rounded-xl border border-border p-3 [-ms-overflow-style:none] [scrollbar-width:none] lg:p-4 [&::-webkit-scrollbar]:hidden'>
-        <div className='flex w-max min-w-full gap-[3px] lg:w-full lg:justify-between'>
-          {monthGroups.map((group) => (
-            <div key={group.label} className='flex shrink-0 flex-col gap-[3px]'>
+      <div className='overflow-x-auto rounded-xl border border-border bg-muted/40 p-3 [-ms-overflow-style:none] [scrollbar-width:none] lg:p-4 [&::-webkit-scrollbar]:hidden'>
+        <div className='flex w-max gap-[3px] lg:w-full lg:justify-between'>
+          {monthGroups.map((group, groupIndex) => (
+            <div
+              key={`${group.label}-${groupIndex}`}
+              className='flex shrink-0 flex-col gap-[3px]'
+            >
               <p className='mb-0.5 font-heading text-[10px] text-muted-foreground lg:text-xs'>
                 {group.label}
               </p>
