@@ -6,7 +6,7 @@ import {
   getHomeData,
   getUserTrainData,
 } from '@/app/_lib/api/fetch-generated';
-import dayjs from 'dayjs';
+import { getServerToday } from '@/app/_lib/server-timezone';
 import { CircleCheck, CirclePercent, Hourglass } from 'lucide-react';
 import { StreakBanner } from './_components/streak-banner';
 import { StatsHeatmap } from './_components/stats-heatmap';
@@ -28,13 +28,16 @@ export default async function StatsPage() {
 
   if (!session.data?.user) redirect('/auth');
 
-  const today = dayjs();
+  const cookieStore = await cookies();
+  const tzOffset = Number(cookieStore.get(TIMEZONE_OFFSET_COOKIE)?.value ?? 0);
+  const safeOffset = Number.isFinite(tzOffset) ? tzOffset : 0;
+  const today = getUserTodayDayjs(safeOffset);
   const from = today.startOf('year').format('YYYY-MM-DD');
-  const to = today.endOf('year').format('YYYY-MM-DD');
+  const to = getUserTodayDateKey(safeOffset);
 
   const [statsResponse, homeData, trainData] = await Promise.all([
     getStats({ from, to }),
-    getHomeData(today.format('YYYY-MM-DD')),
+    getHomeData(todayKey),
     getUserTrainData(),
   ]);
 

@@ -8,6 +8,7 @@ import { Flame } from 'lucide-react';
 import { ConsistencyTracker } from '../_components/consistency-tracker';
 import { WorkoutDayCard } from '../_components/workout-day-card';
 import { getHomeData, getUserTrainData } from '../_lib/api/fetch-generated';
+import { getServerToday } from '../_lib/server-timezone';
 
 export default async function Home() {
   const session = await authClient.getSession({
@@ -18,9 +19,9 @@ export default async function Home() {
 
   if (!session.data?.user) redirect('/auth');
 
-  const today = dayjs();
+  const { today, todayKey } = await getServerToday();
   const [homeData, trainData] = await Promise.all([
-    getHomeData(today.format('YYYY-MM-DD')),
+    getHomeData(todayKey),
     getUserTrainData(),
   ]);
 

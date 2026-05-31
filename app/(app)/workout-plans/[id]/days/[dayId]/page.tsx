@@ -6,7 +6,7 @@ import {
   getHomeData,
   getUserTrainData,
 } from '@/app/_lib/api/fetch-generated';
-import dayjs from 'dayjs';
+import { getServerToday } from '@/app/_lib/server-timezone';
 import Image from 'next/image';
 import { Calendar, Timer, Dumbbell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -35,9 +35,10 @@ export default async function WorkoutDayPage({
   if (!session.data?.user) redirect('/auth');
 
   const { id: workoutPlanId, dayId } = await params;
+  const { todayKey } = await getServerToday();
   const [workoutDayData, homeData, trainData] = await Promise.all([
     getWorkoutDay(workoutPlanId, dayId),
-    getHomeData(dayjs().format('YYYY-MM-DD')),
+    getHomeData(todayKey),
     getUserTrainData(),
   ]);
 

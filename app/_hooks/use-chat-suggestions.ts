@@ -18,7 +18,8 @@ export function useChatSuggestions() {
 
   useEffect(() => {
     const date = dayjs().format('YYYY-MM-DD');
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/home/${date}`;
+    const tzOffset = new Date().getTimezoneOffset();
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/home/${date}?tzOffset=${tzOffset}`;
 
     fetch(url, { credentials: 'include' })
       .then((response) => (response.ok ? response.json() : null))

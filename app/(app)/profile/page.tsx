@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import { authClient } from '@/app/_lib/auth-client';
 import { getUserTrainData, getHomeData } from '@/app/_lib/api/fetch-generated';
-import dayjs from 'dayjs';
+import { getServerToday } from '@/app/_lib/server-timezone';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Weight, Ruler, BicepsFlexed, User } from 'lucide-react';
 import { LogoutButton } from './_components/logout-button';
@@ -17,9 +17,10 @@ export default async function ProfilePage() {
 
   if (!session.data?.user) redirect('/auth');
 
+  const { todayKey } = await getServerToday();
   const [trainData, homeData] = await Promise.all([
     getUserTrainData(),
-    getHomeData(dayjs().format('YYYY-MM-DD')),
+    getHomeData(todayKey),
   ]);
 
   if (trainData.status !== 200) {

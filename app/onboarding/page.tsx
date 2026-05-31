@@ -6,7 +6,7 @@ import {
   getHomeData,
   getUserTrainData,
 } from '@/app/_lib/api/fetch-generated';
-import dayjs from 'dayjs';
+import { getServerToday } from '@/app/_lib/server-timezone';
 import { Chat } from '@/app/_components/chat';
 
 export default async function OnboardingPage() {
@@ -18,8 +18,9 @@ export default async function OnboardingPage() {
 
   if (!session.data?.user) redirect('/auth');
 
+  const { todayKey } = await getServerToday();
   const [homeData, trainData, conversation] = await Promise.all([
-    getHomeData(dayjs().format('YYYY-MM-DD')),
+    getHomeData(todayKey),
     getUserTrainData(),
     getConversation(),
   ]);

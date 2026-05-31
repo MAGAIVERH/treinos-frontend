@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { BottomNav } from '@/app/_components/bottom-nav';
 import { SidebarNav } from '@/app/_components/sidebar-nav';
 import { Chat } from '@/app/_components/chat';
+import { TimezoneOffsetCookie } from '@/app/_components/timezone-offset-cookie';
 
 interface AppShellClientProps {
   children: React.ReactNode;
@@ -22,6 +23,7 @@ export function AppShellClient({
 
   return (
     <div className='min-h-svh bg-background lg:h-svh lg:overflow-hidden'>
+      <TimezoneOffsetCookie />
       <SidebarNav calendarHref={calendarHref} />
 
       <div

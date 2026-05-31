@@ -1,13 +1,14 @@
-import { cookies } from 'next/headers';
+import { getServerTimezoneOffset } from '@/app/_lib/server-timezone';
 
 const getBody = <T>(c: Response | Request): Promise<T> => {
   return c.json() as Promise<T>;
 };
 
-const getUrl = (contextUrl: string): string => {
+const getUrl = async (contextUrl: string): Promise<string> => {
   const newUrl = new URL(`${process.env.NEXT_PUBLIC_API_URL}${contextUrl}`);
-  const requestUrl = new URL(`${newUrl}`);
-  return requestUrl.toString();
+  const tzOffset = await getServerTimezoneOffset();
+  newUrl.searchParams.set('tzOffset', String(tzOffset));
+  return newUrl.toString();
 };
 
 const getHeaders = async (headers?: HeadersInit): Promise<HeadersInit> => {
@@ -22,7 +23,7 @@ export const customFetch = async <T>(
   url: string,
   options: RequestInit,
 ): Promise<T> => {
-  const requestUrl = getUrl(url);
+  const requestUrl = await getUrl(url);
   const requestHeaders = await getHeaders(options.headers);
 
   const requestInit: RequestInit = {
