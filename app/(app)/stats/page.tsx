@@ -29,8 +29,8 @@ export default async function StatsPage() {
   if (!session.data?.user) redirect('/auth');
 
   const today = dayjs();
-  const from = today.subtract(2, 'month').startOf('month').format('YYYY-MM-DD');
-  const to = today.endOf('month').format('YYYY-MM-DD');
+  const from = today.startOf('year').format('YYYY-MM-DD');
+  const to = today.endOf('year').format('YYYY-MM-DD');
 
   const [statsResponse, homeData, trainData] = await Promise.all([
     getStats({ from, to }),

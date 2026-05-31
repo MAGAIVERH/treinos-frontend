@@ -28,8 +28,10 @@ const MONTH_LABELS = [
 
 const WEEKDAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-const HEATMAP_CELL =
-  'size-3.5 shrink-0 rounded-[3px] sm:size-4 lg:size-[15px]';
+const CELL =
+  'size-[11px] shrink-0 rounded-[2px] sm:size-3 lg:size-[13px] xl:size-[14px]';
+
+const CELL_EMPTY = 'bg-[#d8dee4] dark:bg-[#30363d]';
 
 function getMonday(date: dayjs.Dayjs): dayjs.Dayjs {
   const day = date.day();
@@ -37,12 +39,12 @@ function getMonday(date: dayjs.Dayjs): dayjs.Dayjs {
   return date.subtract(day - 1, 'day');
 }
 
-function buildWeeks(today: dayjs.Dayjs): WeekData[] {
-  const startOfRange = today.subtract(2, 'month').startOf('month');
-  const endOfRange = today.endOf('month');
+function buildYearWeeks(today: dayjs.Dayjs): WeekData[] {
+  const startOfYear = today.startOf('year');
+  const endOfYear = today.endOf('year');
 
-  const firstMonday = getMonday(startOfRange);
-  const lastMonday = getMonday(endOfRange);
+  const firstMonday = getMonday(startOfYear);
+  const lastMonday = getMonday(endOfYear);
   const lastSunday = lastMonday.add(6, 'day');
 
   const weeks: WeekData[] = [];
@@ -50,7 +52,7 @@ function buildWeeks(today: dayjs.Dayjs): WeekData[] {
 
   while (
     currentMonday.isBefore(lastSunday) ||
-    currentMonday.isSame(lastSunday)
+    currentMonday.isSame(lastSunday, 'day')
   ) {
     weeks.push({
       dates: Array.from({ length: 7 }, (_, i) => currentMonday.add(i, 'day')),
@@ -61,80 +63,79 @@ function buildWeeks(today: dayjs.Dayjs): WeekData[] {
   return weeks;
 }
 
-function getMonthLabelForWeek(
-  week: WeekData,
-  weekIndex: number,
-  weeks: WeekData[],
-): string | null {
-  const firstOfMonth = week.dates.find((date) => date.date() === 1);
-  if (firstOfMonth) {
-    return MONTH_LABELS[firstOfMonth.month()];
-  }
+function buildMonthLabels(weeks: WeekData[]): (string | null)[] {
+  const shownMonths = new Set<string>();
 
-  if (weekIndex === 0) {
-    return MONTH_LABELS[week.dates[0].month()];
-  }
+  return weeks.map((week, weekIndex) => {
+    const dayOne = week.dates.find((date) => date.date() === 1);
 
-  const previousMonth = weeks[weekIndex - 1].dates[3].month();
-  const currentMonth = week.dates[3].month();
+    if (dayOne) {
+      const key = dayOne.format('YYYY-MM');
+      if (shownMonths.has(key)) return null;
+      shownMonths.add(key);
+      return MONTH_LABELS[dayOne.month()];
+    }
 
-  if (currentMonth !== previousMonth) {
-    return MONTH_LABELS[currentMonth];
-  }
+    if (weekIndex === 0) {
+      const key = week.dates[0].format('YYYY-MM');
+      if (shownMonths.has(key)) return null;
+      shownMonths.add(key);
+      return MONTH_LABELS[week.dates[0].month()];
+    }
 
-  return null;
+    return null;
+  });
 }
 
 function HeatmapCell({
   date,
   dayData,
-  startOfRange,
+  yearStart,
   today,
 }: {
   date: dayjs.Dayjs;
   dayData: GetStats200ConsistencyByDay[string] | undefined;
-  startOfRange: dayjs.Dayjs;
+  yearStart: dayjs.Dayjs;
   today: dayjs.Dayjs;
 }) {
-  const isInRange =
-    !date.isBefore(startOfRange, 'day') && !date.isAfter(today, 'day');
+  const yearEnd = yearStart.endOf('year');
+  const isTrackableDay =
+    !date.isBefore(yearStart, 'day') &&
+    !date.isAfter(yearEnd, 'day') &&
+    !date.isAfter(today, 'day');
 
-  if (!isInRange) {
-    return (
-      <div
-        className={`${HEATMAP_CELL} bg-[#ebedf0] dark:bg-[#2d333b]`}
-        aria-hidden='true'
-      />
-    );
+  if (!isTrackableDay) {
+    return <div className={`${CELL} ${CELL_EMPTY}`} aria-hidden='true' />;
   }
 
   if (dayData?.workoutDayCompleted) {
-    return <div className={`${HEATMAP_CELL} bg-primary`} />;
+    return <div className={`${CELL} bg-primary`} />;
   }
 
   if (dayData?.workoutDayStarted) {
-    return <div className={`${HEATMAP_CELL} bg-primary/55`} />;
+    return <div className={`${CELL} bg-primary/60`} />;
   }
 
-  return <div className={`${HEATMAP_CELL} bg-[#ebedf0] dark:bg-[#2d333b]`} />;
+  return <div className={`${CELL} ${CELL_EMPTY}`} />;
 }
 
 export function StatsHeatmap({ consistencyByDay, today }: StatsHeatmapProps) {
-  const weeks = buildWeeks(today);
-  const startOfRange = today.subtract(2, 'month').startOf('month');
+  const weeks = buildYearWeeks(today);
+  const monthLabels = buildMonthLabels(weeks);
+  const yearStart = today.startOf('year');
 
   return (
-    <div className='relative w-full lg:mx-auto lg:max-w-3xl'>
-      <div className='overflow-x-auto rounded-xl border border-border bg-background p-3 [-ms-overflow-style:none] [scrollbar-width:none] sm:p-4 [&::-webkit-scrollbar]:hidden'>
-        <div className='flex w-max min-w-full gap-2'>
-          <div className='hidden shrink-0 flex-col gap-[3px] pt-[18px] sm:flex'>
+    <div className='relative w-full'>
+      <div className='overflow-x-auto rounded-xl border border-border bg-background p-3 [-ms-overflow-style:none] [scrollbar-width:none] sm:p-4 lg:overflow-x-auto [&::-webkit-scrollbar]:hidden'>
+        <div className='inline-flex gap-2'>
+          <div className='hidden shrink-0 flex-col gap-[3px] pt-4 sm:flex'>
             {WEEKDAY_LABELS.map((label, index) => (
               <div
                 key={label}
-                className='flex h-3.5 items-center sm:h-4 lg:h-[15px]'
+                className='flex h-[11px] items-center sm:h-3 lg:h-[13px] xl:h-[14px]'
               >
                 {index % 2 === 0 ? (
-                  <span className='w-7 font-heading text-[10px] text-muted-foreground'>
+                  <span className='w-7 font-heading text-[10px] leading-none text-muted-foreground'>
                     {label}
                   </span>
                 ) : (
@@ -144,22 +145,22 @@ export function StatsHeatmap({ consistencyByDay, today }: StatsHeatmapProps) {
             ))}
           </div>
 
-          <div className='min-w-0 flex-1'>
-            <div className='mb-1 flex h-[14px] gap-[3px]'>
+          <div className='shrink-0'>
+            <div className='mb-1 flex h-4 gap-[3px]'>
               {weeks.map((week, weekIndex) => {
                 const weekKey = week.dates[0].format('YYYY-MM-DD');
-                const monthLabel = getMonthLabelForWeek(week, weekIndex, weeks);
+                const monthLabel = monthLabels[weekIndex];
 
                 return (
                   <div
                     key={`${weekKey}-label`}
-                    className='relative w-3.5 shrink-0 sm:w-4 lg:w-[15px]'
+                    className='relative w-[11px] shrink-0 sm:w-3 lg:w-[13px] xl:w-[14px]'
                   >
-                    {monthLabel && (
-                      <span className='absolute left-0 top-0 whitespace-nowrap font-heading text-[10px] font-medium text-muted-foreground sm:text-[11px]'>
+                    {monthLabel ? (
+                      <span className='absolute left-0 top-0 font-heading text-[10px] font-medium leading-none text-muted-foreground'>
                         {monthLabel}
                       </span>
-                    )}
+                    ) : null}
                   </div>
                 );
               })}
@@ -180,7 +181,7 @@ export function StatsHeatmap({ consistencyByDay, today }: StatsHeatmapProps) {
                           key={dateStr}
                           date={date}
                           dayData={dayData}
-                          startOfRange={startOfRange}
+                          yearStart={yearStart}
                           today={today}
                         />
                       );
@@ -194,10 +195,10 @@ export function StatsHeatmap({ consistencyByDay, today }: StatsHeatmapProps) {
       </div>
 
       <div
-        className='pointer-events-none absolute inset-y-0 right-0 flex w-10 items-center justify-end rounded-r-xl bg-linear-to-l from-background via-background/90 to-transparent pr-0.5 sm:hidden'
+        className='pointer-events-none absolute inset-y-0 right-0 flex w-8 items-center justify-end rounded-r-xl bg-linear-to-l from-background via-background/95 to-transparent sm:hidden'
         aria-hidden='true'
       >
-        <ChevronRight className='size-4 text-muted-foreground/60' />
+        <ChevronRight className='size-4 text-muted-foreground/70' />
       </div>
 
       <p className='mt-2 text-center font-heading text-xs text-muted-foreground sm:hidden'>
