@@ -11,10 +11,25 @@ interface WeekData {
   dates: dayjs.Dayjs[];
 }
 
-interface MonthGroup {
-  label: string;
-  weeks: WeekData[];
-}
+const MONTH_LABELS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+const WEEKDAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+const HEATMAP_CELL =
+  'size-3.5 shrink-0 rounded-[3px] sm:size-4 lg:size-[15px]';
 
 function getMonday(date: dayjs.Dayjs): dayjs.Dayjs {
   const day = date.day();
@@ -22,7 +37,7 @@ function getMonday(date: dayjs.Dayjs): dayjs.Dayjs {
   return date.subtract(day - 1, 'day');
 }
 
-function buildMonthGroups(today: dayjs.Dayjs): MonthGroup[] {
+function buildWeeks(today: dayjs.Dayjs): WeekData[] {
   const startOfRange = today.subtract(2, 'month').startOf('month');
   const endOfRange = today.endOf('month');
 
@@ -30,53 +45,45 @@ function buildMonthGroups(today: dayjs.Dayjs): MonthGroup[] {
   const lastMonday = getMonday(endOfRange);
   const lastSunday = lastMonday.add(6, 'day');
 
-  const allWeeks: WeekData[] = [];
+  const weeks: WeekData[] = [];
   let currentMonday = firstMonday;
 
   while (
     currentMonday.isBefore(lastSunday) ||
     currentMonday.isSame(lastSunday)
   ) {
-    const dates = Array.from({ length: 7 }, (_, i) =>
-      currentMonday.add(i, 'day'),
-    );
-    allWeeks.push({ dates });
+    weeks.push({
+      dates: Array.from({ length: 7 }, (_, i) => currentMonday.add(i, 'day')),
+    });
     currentMonday = currentMonday.add(7, 'day');
   }
 
-  const monthGroups: MonthGroup[] = [];
-  const monthLabels = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-
-  for (const week of allWeeks) {
-    const thursday = week.dates[3];
-    const monthIndex = thursday.month();
-    const monthLabel = monthLabels[monthIndex];
-
-    const lastGroup = monthGroups[monthGroups.length - 1];
-    if (lastGroup && lastGroup.label === monthLabel) {
-      lastGroup.weeks.push(week);
-    } else {
-      monthGroups.push({ label: monthLabel, weeks: [week] });
-    }
-  }
-
-  return monthGroups;
+  return weeks;
 }
 
-const HEATMAP_CELL = 'size-3 shrink-0 rounded-[2px] lg:size-3.5';
+function getMonthLabelForWeek(
+  week: WeekData,
+  weekIndex: number,
+  weeks: WeekData[],
+): string | null {
+  const firstOfMonth = week.dates.find((date) => date.date() === 1);
+  if (firstOfMonth) {
+    return MONTH_LABELS[firstOfMonth.month()];
+  }
+
+  if (weekIndex === 0) {
+    return MONTH_LABELS[week.dates[0].month()];
+  }
+
+  const previousMonth = weeks[weekIndex - 1].dates[3].month();
+  const currentMonth = week.dates[3].month();
+
+  if (currentMonth !== previousMonth) {
+    return MONTH_LABELS[currentMonth];
+  }
+
+  return null;
+}
 
 function HeatmapCell({
   date,
@@ -94,7 +101,10 @@ function HeatmapCell({
 
   if (!isInRange) {
     return (
-      <div className={`${HEATMAP_CELL} bg-muted/40`} aria-hidden='true' />
+      <div
+        className={`${HEATMAP_CELL} bg-[#ebedf0] dark:bg-[#2d333b]`}
+        aria-hidden='true'
+      />
     );
   }
 
@@ -103,68 +113,94 @@ function HeatmapCell({
   }
 
   if (dayData?.workoutDayStarted) {
-    return <div className={`${HEATMAP_CELL} bg-primary/35`} />;
+    return <div className={`${HEATMAP_CELL} bg-primary/55`} />;
   }
 
-  return (
-    <div
-      className={`${HEATMAP_CELL} bg-background shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]`}
-    />
-  );
+  return <div className={`${HEATMAP_CELL} bg-[#ebedf0] dark:bg-[#2d333b]`} />;
 }
 
 export function StatsHeatmap({ consistencyByDay, today }: StatsHeatmapProps) {
-  const monthGroups = buildMonthGroups(today);
+  const weeks = buildWeeks(today);
   const startOfRange = today.subtract(2, 'month').startOf('month');
 
   return (
     <div className='relative w-full lg:mx-auto lg:max-w-3xl'>
-      <div className='overflow-x-auto rounded-xl border border-border bg-muted/40 p-3 [-ms-overflow-style:none] [scrollbar-width:none] lg:p-4 [&::-webkit-scrollbar]:hidden'>
-        <div className='flex w-max gap-[3px] lg:w-full lg:justify-between'>
-          {monthGroups.map((group, groupIndex) => (
-            <div
-              key={`${group.label}-${groupIndex}`}
-              className='flex shrink-0 flex-col gap-[3px]'
-            >
-              <p className='mb-0.5 font-heading text-[10px] text-muted-foreground lg:text-xs'>
-                {group.label}
-              </p>
-              <div className='flex gap-[3px]'>
-                {group.weeks.map((week) => {
-                  const weekKey = week.dates[0].format('YYYY-MM-DD');
-                  return (
-                    <div key={weekKey} className='flex flex-col gap-[3px]'>
-                      {week.dates.map((date) => {
-                        const dateStr = date.format('YYYY-MM-DD');
-                        const dayData = consistencyByDay[dateStr];
-
-                        return (
-                          <HeatmapCell
-                            key={dateStr}
-                            date={date}
-                            dayData={dayData}
-                            startOfRange={startOfRange}
-                            today={today}
-                          />
-                        );
-                      })}
-                    </div>
-                  );
-                })}
+      <div className='overflow-x-auto rounded-xl border border-border bg-background p-3 [-ms-overflow-style:none] [scrollbar-width:none] sm:p-4 [&::-webkit-scrollbar]:hidden'>
+        <div className='flex w-max min-w-full gap-2'>
+          <div className='hidden shrink-0 flex-col gap-[3px] pt-[18px] sm:flex'>
+            {WEEKDAY_LABELS.map((label, index) => (
+              <div
+                key={label}
+                className='flex h-3.5 items-center sm:h-4 lg:h-[15px]'
+              >
+                {index % 2 === 0 ? (
+                  <span className='w-7 font-heading text-[10px] text-muted-foreground'>
+                    {label}
+                  </span>
+                ) : (
+                  <span className='w-7' aria-hidden='true' />
+                )}
               </div>
+            ))}
+          </div>
+
+          <div className='min-w-0 flex-1'>
+            <div className='mb-1 flex h-[14px] gap-[3px]'>
+              {weeks.map((week, weekIndex) => {
+                const weekKey = week.dates[0].format('YYYY-MM-DD');
+                const monthLabel = getMonthLabelForWeek(week, weekIndex, weeks);
+
+                return (
+                  <div
+                    key={`${weekKey}-label`}
+                    className='relative w-3.5 shrink-0 sm:w-4 lg:w-[15px]'
+                  >
+                    {monthLabel && (
+                      <span className='absolute left-0 top-0 whitespace-nowrap font-heading text-[10px] font-medium text-muted-foreground sm:text-[11px]'>
+                        {monthLabel}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
-          ))}
+
+            <div className='flex gap-[3px]'>
+              {weeks.map((week) => {
+                const weekKey = week.dates[0].format('YYYY-MM-DD');
+
+                return (
+                  <div key={weekKey} className='flex flex-col gap-[3px]'>
+                    {week.dates.map((date) => {
+                      const dateStr = date.format('YYYY-MM-DD');
+                      const dayData = consistencyByDay[dateStr];
+
+                      return (
+                        <HeatmapCell
+                          key={dateStr}
+                          date={date}
+                          dayData={dayData}
+                          startOfRange={startOfRange}
+                          today={today}
+                        />
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
 
       <div
-        className='pointer-events-none absolute inset-y-0 right-0 flex w-10 items-center justify-end rounded-r-xl bg-linear-to-l from-background via-background/90 to-transparent pr-0.5 lg:hidden'
+        className='pointer-events-none absolute inset-y-0 right-0 flex w-10 items-center justify-end rounded-r-xl bg-linear-to-l from-background via-background/90 to-transparent pr-0.5 sm:hidden'
         aria-hidden='true'
       >
         <ChevronRight className='size-4 text-muted-foreground/60' />
       </div>
 
-      <p className='mt-2 text-center font-heading text-xs text-muted-foreground lg:hidden'>
+      <p className='mt-2 text-center font-heading text-xs text-muted-foreground sm:hidden'>
         Swipe to see history
       </p>
     </div>
