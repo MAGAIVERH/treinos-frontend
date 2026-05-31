@@ -28,12 +28,9 @@ export default async function StatsPage() {
 
   if (!session.data?.user) redirect('/auth');
 
-  const cookieStore = await cookies();
-  const tzOffset = Number(cookieStore.get(TIMEZONE_OFFSET_COOKIE)?.value ?? 0);
-  const safeOffset = Number.isFinite(tzOffset) ? tzOffset : 0;
-  const today = getUserTodayDayjs(safeOffset);
+  const { today, todayKey } = await getServerToday();
   const from = today.startOf('year').format('YYYY-MM-DD');
-  const to = getUserTodayDateKey(safeOffset);
+  const to = todayKey;
 
   const [statsResponse, homeData, trainData] = await Promise.all([
     getStats({ from, to }),
