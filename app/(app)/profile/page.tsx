@@ -54,51 +54,59 @@ export default async function ProfilePage() {
     <div className='flex min-h-0 flex-1 flex-col lg:h-full lg:min-h-0 lg:overflow-hidden'>
       <AppHeader variant='title' className='lg:hidden' />
 
-      <div className='flex min-h-0 flex-1 flex-col gap-5 pt-5 lg:grid lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start lg:gap-8 lg:pt-6'>
-        <div className='flex flex-col items-center gap-5 rounded-4xl border border-border bg-primary/8 p-6 lg:sticky lg:top-6'>
-          <Avatar className='size-20 lg:size-24'>
-            <AvatarImage src={user.image ?? undefined} alt={user.name} />
-            <AvatarFallback className='text-2xl'>
-              {user.name?.charAt(0)?.toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <div className='flex flex-col items-center gap-1.5 text-center'>
-            <h1 className='font-heading text-lg font-semibold leading-[1.05] text-foreground lg:text-xl'>
-              {user.name}
-            </h1>
-            <p className='font-heading text-sm leading-[1.15] text-foreground/70'>
-              Premium Free Plan
-            </p>
-          </div>
-        </div>
+      <div className='flex min-h-0 flex-1 flex-col pt-5 lg:items-center lg:justify-center lg:pt-6'>
+        <div className='flex w-full flex-col gap-5 lg:mx-auto lg:max-w-3xl lg:grid lg:grid-cols-[280px_minmax(0,1fr)] lg:items-center lg:gap-10'>
+          <div className='flex flex-col gap-4'>
+            <div className='flex flex-col items-center gap-5 rounded-4xl border border-border bg-primary/8 p-6'>
+              <Avatar className='size-20 lg:size-24'>
+                <AvatarImage src={user.image ?? undefined} alt={user.name} />
+                <AvatarFallback className='text-2xl'>
+                  {user.name?.charAt(0)?.toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className='flex flex-col items-center gap-1.5 text-center'>
+                <h1 className='font-heading text-lg font-semibold leading-[1.05] text-foreground lg:text-xl'>
+                  {user.name}
+                </h1>
+                <p className='font-heading text-sm leading-[1.15] text-foreground/70'>
+                  Premium Free Plan
+                </p>
+              </div>
+            </div>
 
-        <div className='flex min-h-0 flex-1 flex-col gap-5'>
-          <div className='grid w-full grid-cols-2 gap-3 lg:grid-cols-2'>
-            {stats.map((stat) => {
-              const Icon = stat.icon;
-              return (
-                <div
-                  key={stat.label}
-                  className='flex flex-col items-center gap-5 rounded-xl bg-primary/8 p-5'
-                >
-                  <div className='flex items-center rounded-full bg-primary/8 p-2.25'>
-                    <Icon className='size-4 text-primary' />
-                  </div>
-                  <div className='flex flex-col items-center gap-1.5'>
-                    <span className='font-heading text-2xl font-semibold leading-[1.15] text-foreground'>
-                      {stat.value}
-                    </span>
-                    <span className='font-heading text-xs uppercase leading-[1.4] text-muted-foreground'>
-                      {stat.label}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
+            <div className='hidden lg:block'>
+              <LogoutButton />
+            </div>
           </div>
 
-          <div className='mt-auto border-t border-border pt-5 lg:mt-0'>
-            <LogoutButton />
+          <div className='flex min-h-0 flex-1 flex-col gap-5'>
+            <div className='grid w-full grid-cols-2 gap-3'>
+              {stats.map((stat) => {
+                const Icon = stat.icon;
+                return (
+                  <div
+                    key={stat.label}
+                    className='flex flex-col items-center gap-5 rounded-xl bg-primary/8 p-5 lg:p-6'
+                  >
+                    <div className='flex items-center rounded-full bg-primary/8 p-2.25'>
+                      <Icon className='size-4 text-primary' />
+                    </div>
+                    <div className='flex flex-col items-center gap-1.5'>
+                      <span className='font-heading text-2xl font-semibold leading-[1.15] text-foreground'>
+                        {stat.value}
+                      </span>
+                      <span className='font-heading text-xs uppercase leading-[1.4] text-muted-foreground'>
+                        {stat.label}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className='mt-auto border-t border-border pt-5 lg:hidden'>
+              <LogoutButton />
+            </div>
           </div>
         </div>
       </div>
