@@ -1,13 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+const BLOCKED_REQUEST_HEADERS = new Set([
+  'host',
+  'content-length',
+  'connection',
+  'transfer-encoding',
+]);
 
 export async function GET(request: NextRequest) {
+  if (!API_URL) {
+    return NextResponse.json(
+      { error: 'API URL is not configured' },
+      { status: 500 },
+    );
+  }
+
   const url = `${API_URL}/ai/conversation`;
 
   const requestHeaders = new Headers();
   request.headers.forEach((value, key) => {
-    if (!['host', 'content-length', 'connection'].includes(key.toLowerCase())) {
+    if (!BLOCKED_REQUEST_HEADERS.has(key.toLowerCase())) {
       requestHeaders.set(key, value);
     }
   });
@@ -18,7 +32,10 @@ export async function GET(request: NextRequest) {
   });
 
   const setCookies = response.headers.getSetCookie?.() ?? [];
-  const body = await response.text();
+  const body =
+    response.status === 204 || response.status === 304
+      ? null
+      : await response.text();
 
   const nextResponse = new NextResponse(body, {
     status: response.status,

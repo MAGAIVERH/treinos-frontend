@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { UIMessage } from 'ai';
 
 type ConversationHistoryState = {
@@ -45,6 +45,57 @@ export function useConversationHistory({
     unauthorized: false,
   });
 
+  const loadConversation = useCallback(async () => {
+    setState((current) => ({
+      ...current,
+      isLoading: true,
+      error: null,
+      unauthorized: false,
+    }));
+
+    try {
+      const response = await fetch('/api/ai/conversation', {
+        credentials: 'include',
+      });
+
+      if (response.status === 401) {
+        setState({
+          conversationId: null,
+          messages: [],
+          isLoading: false,
+          error: null,
+          unauthorized: true,
+        });
+        return;
+      }
+
+      if (!response.ok) {
+        const details = await response.text();
+        throw new Error(
+          `Failed to load conversation history (${response.status})${details ? `: ${details.slice(0, 120)}` : ''}`,
+        );
+      }
+
+      const data = (await response.json()) as ConversationApiResponse;
+
+      setState({
+        conversationId: data.conversationId,
+        messages: mapToUIMessages(data.messages),
+        isLoading: false,
+        error: null,
+        unauthorized: false,
+      });
+    } catch (error) {
+      setState({
+        conversationId: null,
+        messages: [],
+        isLoading: false,
+        error: error instanceof Error ? error : new Error('Unknown error'),
+        unauthorized: false,
+      });
+    }
+  }, []);
+
   useEffect(() => {
     if (!enabled) {
       setState({
@@ -57,67 +108,8 @@ export function useConversationHistory({
       return;
     }
 
-    let cancelled = false;
-
-    async function loadConversation() {
-      setState((current) => ({
-        ...current,
-        isLoading: true,
-        error: null,
-        unauthorized: false,
-      }));
-
-      try {
-        const response = await fetch('/api/ai/conversation', {
-          credentials: 'include',
-        });
-
-        if (response.status === 401) {
-          if (cancelled) return;
-          setState({
-            conversationId: null,
-            messages: [],
-            isLoading: false,
-            error: null,
-            unauthorized: true,
-          });
-          return;
-        }
-
-        if (!response.ok) {
-          throw new Error('Failed to load conversation history');
-        }
-
-        const data = (await response.json()) as ConversationApiResponse;
-
-        if (cancelled) return;
-
-        setState({
-          conversationId: data.conversationId,
-          messages: mapToUIMessages(data.messages),
-          isLoading: false,
-          error: null,
-          unauthorized: false,
-        });
-      } catch (error) {
-        if (cancelled) return;
-
-        setState({
-          conversationId: null,
-          messages: [],
-          isLoading: false,
-          error: error instanceof Error ? error : new Error('Unknown error'),
-          unauthorized: false,
-        });
-      }
-    }
-
     loadConversation();
+  }, [enabled, loadConversation]);
 
-    return () => {
-      cancelled = true;
-    };
-  }, [enabled]);
-
-  return state;
+  return { ...state, refetch: loadConversation };
 }

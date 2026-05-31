@@ -36,6 +36,8 @@ interface ChatContentProps {
   showAccessLink?: boolean;
   conversationId: string | null;
   initialMessages: UIMessage[];
+  historyError?: Error | null;
+  onRetryHistory?: () => void;
   onClose: () => void;
 }
 
@@ -178,6 +180,8 @@ function ChatContent({
   showAccessLink = false,
   conversationId,
   initialMessages,
+  historyError = null,
+  onRetryHistory,
   onClose,
 }: ChatContentProps) {
   const [chatParams, setChatParams] = useQueryStates({
@@ -279,6 +283,27 @@ function ChatContent({
       />
 
       <div className='min-h-0 flex-1 overflow-y-auto overscroll-contain'>
+        {historyError ? (
+          <div className='px-5 pt-5'>
+            <div className='rounded-xl border border-border bg-secondary/50 p-4'>
+              <p className='font-heading text-sm text-muted-foreground'>
+                Could not load previous messages. You can still chat below.
+              </p>
+              {onRetryHistory ? (
+                <Button
+                  type='button'
+                  variant='outline'
+                  size='sm'
+                  className='mt-3'
+                  onClick={onRetryHistory}
+                >
+                  Try again
+                </Button>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
+
         {chatError ? (
           <div className='px-5 pt-5'>
             <div className='rounded-xl border border-destructive/20 bg-destructive/5 p-4'>
@@ -403,6 +428,7 @@ export function Chat({
     isLoading,
     error: historyError,
     unauthorized,
+    refetch: refetchHistory,
   } = useConversationHistory({ enabled: shouldLoadHistory });
 
   const handleClose = () => {
@@ -430,21 +456,15 @@ export function Chat({
       onClose={handleClose}
       message='Your session expired. Sign in again to use Coach AI.'
     />
-  ) : historyError ? (
-    <ChatErrorState
-      embedded={embedded}
-      showAccessLink={showAccessLink}
-      onClose={handleClose}
-      message='Could not load the chat. Please try again.'
-      onRetry={() => window.location.reload()}
-    />
   ) : (
     <ChatContent
       embedded={embedded}
       initialMessage={initialMessage}
       showAccessLink={showAccessLink}
       conversationId={conversationId}
-      initialMessages={initialMessages}
+      initialMessages={historyError ? [] : initialMessages}
+      historyError={historyError}
+      onRetryHistory={refetchHistory}
       onClose={handleClose}
     />
   );
